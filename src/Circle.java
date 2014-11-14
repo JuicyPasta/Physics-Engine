@@ -15,7 +15,7 @@ public class Circle extends Shape {
     }
 
     @Override
-    public double mass(){
+    public double area(){
         return Math.PI * Math.pow(r,2);
     }
     public void draw(Graphics g){

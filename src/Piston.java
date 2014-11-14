@@ -6,11 +6,10 @@ import java.awt.*;
 
 //This is a generic engine object, all other objects should extend this
 public class Piston {
-    double x,y,vx,vy,ax,ay,rx;
-    int mass;
+    double x,y,vx,vy,ax,ay,rx,density;
     Shape shape;
     Engine eng;
-    public Piston (Engine eng, double x, double y, double vx, double vy, double ax, double ay, double rx, int mass, Shape shape){
+    public Piston (Engine eng, double x, double y, double vx, double vy, double ax, double ay, double rx, int density, Shape shape){
         this.x=x;
         this.y=y;
         this.vx=vx;
@@ -18,16 +17,17 @@ public class Piston {
         this.ax=ax;
         this.ay=ay;
         this.rx=rx;
-        this.mass=mass;
         this.shape=shape;
         this.eng=eng;
+        this.density = density;
     }
     public void update(){
         
     }
 
     public double mass(){
-        return shape.mass();
+
+        return shape.area()*density;
     }
     public void draw(Graphics g){
         shape.draw(g);
