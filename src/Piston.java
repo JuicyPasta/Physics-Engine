@@ -6,7 +6,8 @@ import java.awt.*;
 
 //This is a generic engine object, all other objects should extend this
 public class Piston {
-    double x,y,vx,vy,ax,ay,rx,density;
+    static int SIZE;
+    double x,y,vx,vy,ax,ay,rx,density;//TODO: make private and syncronize get/set methods to ensure thread-safe
     Shape shape;
     Engine eng;
     public Piston (Engine eng, double x, double y, double vx, double vy, double ax, double ay, double rx, int density, Shape shape){
@@ -29,6 +30,12 @@ public class Piston {
     }
     public void update(){
         if (isBound()){
+            if (x + vx - shape.lengthToEdge(Math.PI) < 0 || x + vx + shape.lengthToEdge(0) >= SIZE){
+                vx *= -1;
+            }
+            if (y + vy - shape.lengthToEdge(Math.PI/2) < 0 || y + vy + shape.lengthToEdge(3*Math.PI/2) >= SIZE){
+                vy *= -1;
+            }
             x += vx;
             y += vy;
             vx += ax;

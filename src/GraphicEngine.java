@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 /**
  * Created by Kyle on 11/13/2014.
@@ -9,13 +10,11 @@ import java.awt.image.BufferStrategy;
 public class GraphicEngine extends JFrame implements Runnable {
 
     BufferStrategy bs;
-    final int SIZE = 500;
-    BallManager bm;
+    ArrayList<Piston> arr;
 
-    public GraphicEngine(){
-
-        bm = new BallManager(SIZE,10);
-        setSize(SIZE,SIZE);
+    public GraphicEngine(ArrayList<Piston> arr){
+        this.arr = arr;
+        setSize(Main.SIZE,Main.SIZE);
         setBackground(Color.WHITE);
         setTitle("GraphicV12");
         setResizable(false);
@@ -27,7 +26,7 @@ public class GraphicEngine extends JFrame implements Runnable {
     public void paintUpdate(){
         BufferStrategy bs = getBufferStrategy();
         Graphics g = bs.getDrawGraphics();
-        paintNow(g);//
+        paintNow(g);
         g.dispose();
         bs.show();
     }
@@ -35,9 +34,11 @@ public class GraphicEngine extends JFrame implements Runnable {
     private void paintNow(Graphics g){
         //do all drawing here
         g.setColor(Color.WHITE);
-        g.fillRect(0,0,SIZE,SIZE);
+        g.fillRect(0,0,Main.SIZE,Main.SIZE);
         g.setColor(Color.BLACK);
-        bm.draw(g);
+        for (int i = 0; i < arr.size(); i++){
+            arr.get(i).draw(g);
+        }
     }
 
     @Override
@@ -46,14 +47,12 @@ public class GraphicEngine extends JFrame implements Runnable {
         bs = getBufferStrategy();
 
         while (true) {
-            bm.update();
             try {
                 Thread.sleep(1000 / 60); // 1000/fps
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             paintUpdate();
-            bm.update();
         }
     }
 }

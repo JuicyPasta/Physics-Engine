@@ -5,26 +5,28 @@ import java.awt.*;
  */
 
 import java.util.*;
-public class Engine {
+public class Engine implements Runnable{
     ArrayList <Piston> pistons;
     Physics phys;
-    public Engine(){
-        this.pistons = new ArrayList <Piston> ();
-        this.phys = new Physics();
+    public Engine(ArrayList <Piston> pistons){
+        this.pistons = pistons;
+        this.phys = new Physics(pistons);
     }
     public void addPiston(Piston p) {
         p.bindEngine(this);
         pistons.add(p);
     }
     public void update(){
+        phys.update();
         for (Piston p: pistons){
             p.update();
         }
     }
-    public void draw(Graphics g){
-        for (Piston p: pistons){
-            p.draw(g);
+
+    @Override
+    public void run() {
+        while (true){
+            update();
         }
     }
-
 }
