@@ -9,9 +9,13 @@ import java.awt.image.BufferStrategy;
 public class GraphicEngine extends JFrame implements Runnable {
 
     BufferStrategy bs;
+    final int SIZE = 500;
+    BallManager bm;
+
     public GraphicEngine(){
 
-        setSize(500,500);
+        bm = new BallManager(SIZE,10);
+        setSize(SIZE,SIZE);
         setBackground(Color.WHITE);
         setTitle("GraphicV12");
         setResizable(false);
@@ -30,24 +34,26 @@ public class GraphicEngine extends JFrame implements Runnable {
 
     private void paintNow(Graphics g){
         //do all drawing here
+        g.setColor(Color.WHITE);
+        g.fillRect(0,0,SIZE,SIZE);
         g.setColor(Color.BLACK);
-        g.drawRect(100,100,300,300);
-        g.drawRect(99,99,302,302);//final test
-        g.setColor(Color.BLUE);
-        g.fillRect(101,101,299,299);
+        bm.draw(g);
     }
 
     @Override
     public void run() {
         createBufferStrategy(2);
         bs = getBufferStrategy();
+
         while (true) {
+            bm.update();
             try {
                 Thread.sleep(1000 / 60); // 1000/fps
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             paintUpdate();
+            bm.update();
         }
     }
 }
