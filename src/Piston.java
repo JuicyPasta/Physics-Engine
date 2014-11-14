@@ -7,60 +7,51 @@ import java.util.ArrayList;
 
 //This is a generic engine object, all other objects should extend this
 public class Piston {
-
     private double x,y; //TODO: ensure thread-safe
-    double vx,vy,ax,ay,rot,density;
+    Pair position;
+    Pair velocity;
+    double rot;
+    double vrot;
+    int density;
     Shape shape;
     ArrayList<Piston> others;
-    public Piston (ArrayList<Piston> others, double x, double y, double vx, double vy, double ax, double ay, double rot, int density, Shape shape){
-        this.x=x;
-        this.y=y;
-        this.vx=vx;
-        this.vy=vy;
-        this.ax=ax;
-        this.ay=ay;
+    Physics phy;
+    public Piston (Pair position, Pair velocity, double rot, double vrot, int density, Shape shape, ArrayList<Piston> others, Physics phy){
+        this.position=position;
+        this.velocity=velocity;
         this.rot=rot;
+        this.vrot=vrot;
         this.shape=shape;
-        this.shape.setPos(x,y);
+        this.shape.setPos(position);
         this.others=others;
         this.density = density;
-    }
-    public Piston (double x, double y, double vx, double vy, double ax, double ay, double rx, int density, Shape shape){
-        this(null,x,y,vx,vy,ax,ay,rx,density,shape);
+        this.phy=phy;
     }
 
-    public synchronized double getX() {
-        return x;
+    public synchronized Pair getPos() {
+        return position;
     }
 
-    public synchronized double getY() {
-        return y;
-    }
-
-    private synchronized void addXY(double x, double y) {
-        this.x += x;
-        this.y += y;
+    // If possible synchronize the pair add method?
+    private synchronized void addPair(Pair a,Pair b) {
+        a.basicAdd(b);
     }
 
     public void update(){
+        if (position.x + velocity.x - shape.lengthToEdge(Math.PI) < 0 || position.x + velocity.x + shape.lengthToEdge(0) >= Main.SIZE){
+            velocity.x *= -1;
+        }
+        if (position.y + velocity.y - shape.lengthToEdge(Math.PI/2) < 0 || position.x + velocity.y + shape.lengthToEdge(3*Math.PI/2) >= Main.SIZE){
+            velocity.y *= -1;
+        }
 
-        if (x + vx - shape.lengthToEdge(Math.PI) < 0 || x + vx + shape.lengthToEdge(0) >= Main.SIZE){
-            vx *= -1;
-        }
-        if (y + vy - shape.lengthToEdge(Math.PI/2) < 0 || y + vy + shape.lengthToEdge(3*Math.PI/2) >= Main.SIZE){
-            vy *= -1;
-        }
-        addXY(vx,vy); //thread safe
-        vx += ax;
-        vy += ay;
-        //Handle the next move with eng.physics.XXX();
+        Pair gravAcc = phy.getGrav(this,others);
+        addPair(velocity, gravAcc); // thread safe
+        addPair(position, velocity); // thread safe
 
     }
-    public void bindEngine(ArrayList<Piston> others){
-        this.others=others;
-    }
+
     public double mass(){
-
         return shape.area()*density;
     }
     public void draw(Graphics g){

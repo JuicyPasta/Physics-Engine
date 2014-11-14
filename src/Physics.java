@@ -21,6 +21,13 @@ public class Physics{
             }
         }
     }
+    public Pair getGrav (Piston self, ArrayList <Piston> others){
+        for (Piston p : others){
+            double force = GRAV_CONST * self.mass() * p.mass() / distance(self, p);
+            double angle = angle(self,p);
+            return getAcceleration(self,force,angle);
+        }
+    }
     public double distance(Piston a, Piston b){
         return Math.sqrt( Math.pow(a.getX() - b.getX(), 2) +  Math.pow(a.getY() - b.getY(), 2));
     }
@@ -33,6 +40,12 @@ public class Physics{
     public void applyForce(Piston b, double force, double angle){
         b.ax += force * Math.cos(angle) / b.mass();
         b.ay += force * Math.sin(angle) / b.mass();
+    }
+    public Pair getAcceleration(Piston b, double force, double angle){
+        Pair v = new Pair();
+        v.x += force * Math.cos(angle) / b.mass();
+        v.y += force * Math.sin(angle) / b.mass();
+        return v;
     }
     public void update(){
         for (int i = 0; i < arr.size(); i++){

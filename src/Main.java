@@ -8,12 +8,13 @@ public class Main {
     public static int SIZE = 500;
     static GraphicEngine ge;
     static Engine e;
+    static Physics p;
     public static void main(String[] args) {
         ArrayList<Piston> arr = new ArrayList<Piston>();
-
-        Piston p = new Piston(arr,100,100,.2,.5,0,0,0,1,new Circle(15));
-        Piston p1 = new Piston(arr,201,100,-.1,.3,0,0,0,1,new Circle(15));
-        Piston p2 = new Piston(arr,201,150,.4,.1,0,0,0,1,new Circle(25));
+        p = new Physics();
+        Piston p = new Piston(new Pair(100,100),new Pair(.2,.5),0,1,new Circle(15),arr,p);
+        Piston p1 = new Piston(new Pair(201,100),new Pair(-.1,.3),0,1,new Circle(15),arr,p);
+        Piston p2 = new Piston(new Pair (201,150),new Pair(.4,.1),0,1,new Circle(25),arr,p);
 
         arr.add(p);
         arr.add(p1);
