@@ -12,8 +12,8 @@ public class GraphicEngine extends JFrame implements Runnable {
     BufferStrategy bs;
     ArrayList<Piston> arr;
 
-    public GraphicEngine(){
-        this.arr = new ArrayList <Piston>();
+    public GraphicEngine(ArrayList<Piston> pistons){
+        this.arr = pistons;
         setSize(Main.SIZE,Main.SIZE);
         setBackground(Color.WHITE);
         setTitle("GraphicV12");
