@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  * Created by Jackson on 11/13/14.
  */
@@ -15,5 +17,8 @@ public class Circle extends Shape {
     @Override
     public double mass(){
         return Math.PI * Math.pow(r,2);
+    }
+    public void draw(Graphics g){
+
     }
 }

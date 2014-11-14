@@ -1,3 +1,5 @@
+import java.awt.*;
+
 /**
  * Created by Jackson on 11/13/14.
  */
@@ -26,6 +28,9 @@ public class Piston {
 
     public double mass(){
         return shape.mass();
+    }
+    public void draw(Graphics g){
+        shape.draw(g);
     }
 
 
