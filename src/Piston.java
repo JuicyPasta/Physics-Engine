@@ -7,7 +7,8 @@ public class Piston {
     double x,y,vx,vy,ax,ay,rx;
     int mass;
     Shape shape;
-    public Piston (double x, double y, double vx, double vy, double ax, double ay, double rx, int mass, Shape shape){
+    Engine eng;
+    public Piston (Engine eng, double x, double y, double vx, double vy, double ax, double ay, double rx, int mass, Shape shape){
         this.x=x;
         this.y=y;
         this.vx=vx;
@@ -17,8 +18,9 @@ public class Piston {
         this.rx=rx;
         this.mass=mass;
         this.shape=shape;
+        this.eng=eng;
     }
     public void update(){
-
+        for
     }
 }

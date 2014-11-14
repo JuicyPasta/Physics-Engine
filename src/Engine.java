@@ -4,8 +4,11 @@
 
 import java.util.*;
 public class Engine {
-    ArrayList <Piston> pistons = new ArrayList <Piston> ();
+    ArrayList <Piston> pistons;
+    Physics phys;
     public Engine(){
+        this.pistons = new ArrayList <Piston> ();
+        this.phys = new Physics();
     }
     public void addPiston(){
 
@@ -18,4 +21,5 @@ public class Engine {
             p.update();
         }
     }
+
 }
