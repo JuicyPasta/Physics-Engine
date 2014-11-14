@@ -22,12 +22,12 @@ public class Physics{
         }
     }
     public double distance(Piston a, Piston b){
-        return Math.sqrt( Math.pow(a.x - b.x, 2) +  Math.pow(a.y - b.y, 2));
+        return Math.sqrt( Math.pow(a.getX() - b.getX(), 2) +  Math.pow(a.getY() - b.getY(), 2));
     }
 
 
     public double angle(Piston a, Piston b){
-        return Math.atan((a.y - b.y)/(a.x - b.x));
+        return Math.atan((a.getY() - b.getY())/(a.getX() - b.getX()));
     }
 
     public void applyForce(Piston b, double force, double angle){
