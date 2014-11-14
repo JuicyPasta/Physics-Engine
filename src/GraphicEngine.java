@@ -32,7 +32,7 @@ public class GraphicEngine extends JFrame implements Runnable {
         //do all drawing here
         g.setColor(Color.BLACK);
         g.drawRect(100,100,300,300);
-        g.drawRect(99,99,302,302);//here
+        g.drawRect(99,99,302,302);//final test
         g.setColor(Color.BLUE);
         g.fillRect(101,101,299,299);
     }
