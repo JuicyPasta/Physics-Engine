@@ -9,7 +9,7 @@ public class BallManager {
     }
     public void update(){
         for (int i = 0; i < arr.length; i++){
-            for (int j = i; j < arr.length; j++){
+            for (int j = i + 1; j < arr.length; j++){
                 if (Math.sqrt( Math.pow(arr[i].x - arr[j].x, 2) +  Math.pow(arr[i].y - arr[j].y, 2)) < arr[i].r + arr[j].r){
                     int tx = arr[i].dx;
                     int ty = arr[i].dy;
