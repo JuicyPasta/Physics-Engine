@@ -10,14 +10,14 @@ public class Main {
         ArrayList<Piston> arr = new ArrayList<Piston>();
 
 
-        GraphicEngine ge = new GraphicEngine(arr);
-        Engine e = new Engine(arr);
+        GraphicEngine ge = new GraphicEngine();
+        Engine e = new Engine();
         Thread t1 = new Thread(ge);
         Thread t2 = new Thread(e);
         t1.start();
         t2.start();
 
-        Piston p = new Piston(10,10,1,.5,0,0,0,1,new Circle());
+        Piston p = new Piston(100,100,1,1,0,0,0,1,new Circle());
         e.addPiston(p);
         ge.addPiston(p);
     }

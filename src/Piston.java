@@ -6,7 +6,7 @@ import java.awt.*;
 
 //This is a generic engine object, all other objects should extend this
 public class Piston {
-    static int SIZE;
+
     private double x,y; //TODO: ensure thread-safe
     double vx,vy,ax,ay,rot,density;
     Shape shape;
@@ -46,15 +46,15 @@ public class Piston {
 
     public void update(){
         if (isBound()){
-            if (x + vx - shape.lengthToEdge(Math.PI) < 0 || x + vx + shape.lengthToEdge(0) >= SIZE){
+            if (x + vx - shape.lengthToEdge(Math.PI) < 0 || x + vx + shape.lengthToEdge(0) >= Main.SIZE){
                 vx *= -1;
             }
-            if (y + vy - shape.lengthToEdge(Math.PI/2) < 0 || y + vy + shape.lengthToEdge(3*Math.PI/2) >= SIZE){
+            if (y + vy - shape.lengthToEdge(Math.PI/2) < 0 || y + vy + shape.lengthToEdge(3*Math.PI/2) >= Main.SIZE){
                 vy *= -1;
             }
             addXY(vx,vy); //thread safe
             vx += ax;
-            vy += vy;
+            vy += ay;
             //Handle the next move with eng.physics.XXX();
         }else{
             System.out.println("this piston is not bound to an engine :(");
@@ -68,8 +68,21 @@ public class Piston {
         return shape.area()*density;
     }
     public void draw(Graphics g){
+        shape.setPos(x,y);
         shape.draw(g);
     }
 
-
+    @Override
+    public String toString() {
+        return "Piston{" +
+                "density=" + density +
+                ", x=" + x +
+                ", y=" + y +
+                ", vx=" + vx +
+                ", vy=" + vy +
+                ", ax=" + ax +
+                ", ay=" + ay +
+                ", rot=" + rot +
+                '}';
+    }
 }

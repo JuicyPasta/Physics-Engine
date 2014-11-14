@@ -8,8 +8,8 @@ import java.util.*;
 public class Engine implements Runnable{
     ArrayList <Piston> pistons;
     Physics phys;
-    public Engine(ArrayList <Piston> pistons){
-        this.pistons = pistons;
+    public Engine(){
+        this.pistons = new ArrayList <Piston>();
         this.phys = new Physics(pistons);
     }
     public synchronized void addPiston(Piston p) {
@@ -26,7 +26,13 @@ public class Engine implements Runnable{
     @Override
     public void run() {
         while (true){
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             update();
+
         }
     }
 }

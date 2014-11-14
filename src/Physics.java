@@ -51,6 +51,6 @@ public class Physics{
                 }
             }
         }
-        for (int i = 0; i < arr.size(); i++) arr.get(i).update();
+        //for (int i = 0; i < arr.size(); i++) arr.get(i).update();
     }
 }
