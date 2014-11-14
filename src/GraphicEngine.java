@@ -23,6 +23,10 @@ public class GraphicEngine extends JFrame implements Runnable {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
+    public synchronized void addPiston(Piston piston){
+        arr.add(piston);
+    }
+
     public void paintUpdate(){
         BufferStrategy bs = getBufferStrategy();
         Graphics g = bs.getDrawGraphics();
@@ -31,7 +35,7 @@ public class GraphicEngine extends JFrame implements Runnable {
         bs.show();
     }
 
-    private void paintNow(Graphics g){
+    private synchronized void paintNow(Graphics g){
         //do all drawing here
         g.setColor(Color.WHITE);
         g.fillRect(0,0,Main.SIZE,Main.SIZE);

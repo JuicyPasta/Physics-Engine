@@ -16,5 +16,9 @@ public class Main {
         Thread t2 = new Thread(e);
         t1.start();
         t2.start();
+
+        Piston p = new Piston(10,10,1,.5,0,0,0,1,new Circle());
+        e.addPiston(p);
+        ge.addPiston(p);
     }
 }

@@ -5,8 +5,8 @@ import java.awt.*;
 
 //Every piston has a shape, shapes is also designed to be a parent class
 public abstract class Shape {
-    int x,y;
-    Shape(int x, int y){
+    double x,y;
+    public void setPos(double x, double y){
         this.x = x;
         this.y = y;
     }

@@ -8,18 +8,19 @@ import java.awt.*;
 public class Piston {
     static int SIZE;
     private double x,y; //TODO: ensure thread-safe
-    double vx,vy,ax,ay,rx,density;
+    double vx,vy,ax,ay,rot,density;
     Shape shape;
     Engine eng;
-    public Piston (Engine eng, double x, double y, double vx, double vy, double ax, double ay, double rx, int density, Shape shape){
+    public Piston (Engine eng, double x, double y, double vx, double vy, double ax, double ay, double rot, int density, Shape shape){
         this.x=x;
         this.y=y;
         this.vx=vx;
         this.vy=vy;
         this.ax=ax;
         this.ay=ay;
-        this.rx=rx;
+        this.rot=rot;
         this.shape=shape;
+        this.shape.setPos(x,y);
         this.eng=eng;
         this.density = density;
     }
@@ -34,16 +35,13 @@ public class Piston {
         return x;
     }
 
-    public synchronized void setX(double x) {
-        this.x = x;
-    }
-
     public synchronized double getY() {
         return y;
     }
 
-    public synchronized void setY(double y) {
-        this.y = y;
+    private synchronized void addXY(double x, double y) {
+        this.x += x;
+        this.y += y;
     }
 
     public void update(){
@@ -54,8 +52,7 @@ public class Piston {
             if (y + vy - shape.lengthToEdge(Math.PI/2) < 0 || y + vy + shape.lengthToEdge(3*Math.PI/2) >= SIZE){
                 vy *= -1;
             }
-            x += vx;
-            y += vy;
+            addXY(vx,vy); //thread safe
             vx += ax;
             vy += vy;
             //Handle the next move with eng.physics.XXX();

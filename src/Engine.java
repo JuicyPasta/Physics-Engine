@@ -12,11 +12,11 @@ public class Engine implements Runnable{
         this.pistons = pistons;
         this.phys = new Physics(pistons);
     }
-    public void addPiston(Piston p) {
+    public synchronized void addPiston(Piston p) {
         p.bindEngine(this);
         pistons.add(p);
     }
-    public void update(){
+    public synchronized void update(){
         phys.update();
         for (Piston p: pistons){
             p.update();
