@@ -3,7 +3,7 @@
  */
 
 //This is a generic engine object, all other objects should extend this
-public abstract class Piston {
+public class Piston {
     double x,y,vx,vy,ax,ay,rx;
     int mass;
     Shape shape;
@@ -20,7 +20,9 @@ public abstract class Piston {
         this.shape=shape;
         this.eng=eng;
     }
-    public abstract void update();
+    public void update(){
+        
+    }
 
     public double mass(){
         return shape.mass();
