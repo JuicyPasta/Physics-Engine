@@ -40,7 +40,7 @@ public class Physics{
                 if (arr.get(i).shape instanceof Circle && arr.get(j).shape instanceof Circle) {
                     Circle c1 = (Circle) arr.get(i).shape;
                     Circle c2 = (Circle) arr.get(j).shape;
-                    if (Math.sqrt(Math.pow(c1.x - c2.x, 2) + Math.pow(c1.y - c2.y, 2)) < c1.r + c2.r) {
+                    if (Math.sqrt(Math.pow(arr.get(i).getX() - arr.get(j).getX(), 2) + Math.pow(arr.get(i).getY() - arr.get(j).getY(), 2)) < c1.r + c2.r) {
                         double tx = arr.get(i).vx;
                         double ty = arr.get(i).vy;
                         arr.get(i).vx = arr.get(j).vx;
