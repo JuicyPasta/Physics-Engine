@@ -55,7 +55,7 @@ public class Piston {
         return shape.area()*density;
     }
     public void draw(Graphics g){
-        shape.setPos(x,y);
+        shape.setPos(position);
         shape.draw(g);
     }
 
@@ -63,13 +63,12 @@ public class Piston {
     public String toString() {
         return "Piston{" +
                 "density=" + density +
-                ", x=" + x +
-                ", y=" + y +
-                ", vx=" + vx +
-                ", vy=" + vy +
-                ", ax=" + ax +
-                ", ay=" + ay +
+                ", x=" + position.x +
+                ", y=" + position.y +
+                ", vx=" + velocity.x +
+                ", vy=" + velocity.y +
                 ", rot=" + rot +
+                ", vrot=" + vrot +
                 '}';
     }
 }

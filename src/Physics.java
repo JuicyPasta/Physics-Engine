@@ -11,36 +11,25 @@ public class Physics{
         this.arr = arr;
     }
 
-    public void gravityUpdate(){
-        for (int i = 0; i < arr.size(); i++){
-            for (int j = i + 1; j < arr.size(); j++) {
-                double force = GRAV_CONST * arr.get(i).mass() * arr.get(j).mass() / distance(arr.get(i), arr.get(j));
-                double angle = angle(arr.get(i),arr.get(j));
-                applyForce(arr.get(i), force, angle);
-                applyForce(arr.get(j), force, angle + Math.PI);
-            }
-        }
-    }
+    public Physics () {}
+
     public Pair getGrav (Piston self, ArrayList <Piston> others){
+        Pair acc = new Pair();
         for (Piston p : others){
             double force = GRAV_CONST * self.mass() * p.mass() / distance(self, p);
             double angle = angle(self,p);
-            return getAcceleration(self,force,angle);
+            acc.basicAdd(getAcceleration(self,force,angle));
         }
+        return acc;
     }
     public double distance(Piston a, Piston b){
-        return Math.sqrt( Math.pow(a.getX() - b.getX(), 2) +  Math.pow(a.getY() - b.getY(), 2));
+        return Math.sqrt( Math.pow(a.position.x - b.position.x, 2) +  Math.pow(a.position.y - b.position.y, 2));
     }
-
 
     public double angle(Piston a, Piston b){
-        return Math.atan((a.getY() - b.getY())/(a.getX() - b.getX()));
+        return Math.atan((a.position.y - b.position.y)/(a.position.x - b.position.x));
     }
 
-    public void applyForce(Piston b, double force, double angle){
-        b.ax += force * Math.cos(angle) / b.mass();
-        b.ay += force * Math.sin(angle) / b.mass();
-    }
     public Pair getAcceleration(Piston b, double force, double angle){
         Pair v = new Pair();
         v.x += force * Math.cos(angle) / b.mass();
@@ -53,13 +42,13 @@ public class Physics{
                 if (arr.get(i).shape instanceof Circle && arr.get(j).shape instanceof Circle) {
                     Circle c1 = (Circle) arr.get(i).shape;
                     Circle c2 = (Circle) arr.get(j).shape;
-                    if (Math.sqrt(Math.pow(arr.get(i).getX() - arr.get(j).getX(), 2) + Math.pow(arr.get(i).getY() - arr.get(j).getY(), 2)) < c1.r + c2.r) {
-                        double tx = arr.get(i).vx;
-                        double ty = arr.get(i).vy;
-                        arr.get(i).vx = arr.get(j).vx;
-                        arr.get(i).vy = arr.get(j).vy;
-                        arr.get(j).vx = tx;
-                        arr.get(j).vy = ty;
+                    if (Math.sqrt(Math.pow(arr.get(i).position.x - arr.get(j).position.x, 2) + Math.pow(arr.get(i).position.y - arr.get(j).position.y, 2)) < c1.r + c2.r) {
+                        double tx = arr.get(i).velocity.x;
+                        double ty = arr.get(i).velocity.y;
+                        arr.get(i).velocity.x = arr.get(j).velocity.x;
+                        arr.get(i).velocity.y = arr.get(j).velocity.y;
+                        arr.get(j).velocity.x = tx;
+                        arr.get(j).velocity.y = ty;
                     }
                 }
             }
