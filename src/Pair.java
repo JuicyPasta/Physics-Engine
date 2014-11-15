@@ -11,12 +11,15 @@ public class Pair {
         this.y=y;
     }
     public Pair (){
-
+        this.x=0;
+        this.y=0;
     }
     public void basicAdd(Pair other){
         this.x += other.x;
         this.y += other.y;
     }
-
+    public String toString(){
+        return ("x: " + x + " y: " + y);
+    }
 
 }

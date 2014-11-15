@@ -16,7 +16,8 @@ public class Piston {
     Shape shape;
     ArrayList<Piston> others;
     Physics phy;
-    public Piston (Pair position, Pair velocity, double rot, double vrot, int density, Shape shape, ArrayList<Piston> others, Physics phy){
+    int id;
+    public Piston (Pair position, Pair velocity, double rot, double vrot, int density, Shape shape, ArrayList<Piston> others, Physics phy, int id){
         this.position=position;
         this.velocity=velocity;
         this.rot=rot;
@@ -26,6 +27,8 @@ public class Piston {
         this.others=others;
         this.density = density;
         this.phy=phy;
+        this.id=id;
+
     }
 
     public synchronized Pair getPos() {

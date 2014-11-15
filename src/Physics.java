@@ -4,21 +4,24 @@ import java.util.ArrayList;
  * Created by Kyle on 11/13/2014.
  */
 public class Physics{
-    double GRAV_CONST = 1;
-    ArrayList<Piston> arr;
+    double GRAV_CONST = .01;
+    ArrayList<Piston> arr; // we wont need this
 
     Physics(ArrayList<Piston> arr){
         this.arr = arr;
     }
-
     public Physics () {}
 
+    // returns the acceration of gravity acting on a piston
     public Pair getGrav (Piston self, ArrayList <Piston> others){
         Pair acc = new Pair();
         for (Piston p : others){
-            double force = GRAV_CONST * self.mass() * p.mass() / distance(self, p);
-            double angle = angle(self,p);
-            acc.basicAdd(getAcceleration(self,force,angle));
+            if (p.id != self.id) { // so we don't calculate the gravity to itself
+                double distance = distance(self, p);
+                double force = GRAV_CONST * self.mass() * p.mass() / (distance * distance);
+                double angle = angle(self, p);
+                acc.basicAdd(getAcceleration(self, force, angle));
+            }
         }
         return acc;
     }
