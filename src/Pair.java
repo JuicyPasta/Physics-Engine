@@ -18,6 +18,19 @@ public class Pair {
         this.x += other.x;
         this.y += other.y;
     }
+    public void convertUnit(){
+        double r = Math.sqrt(x*x+y*y);
+        x /= r;
+        y /= r;
+    }
+    public void multiplyScalar(double scal){
+        x *= scal;
+        y *= scal;
+    }
+    public void divideScalar(double scal){
+        x /= scal;
+        y /= scal;
+    }
     public String toString(){
         return ("x: " + x + " y: " + y);
     }

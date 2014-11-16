@@ -49,7 +49,8 @@ public class Piston {
         }
 
         Pair gravAcc = phy.getGrav(this,others);
-        //addPair(velocity, gravAcc); // thread safe
+        System.out.println(id + " " + gravAcc);
+        addPair(velocity, gravAcc); // thread safe
         addPair(position, velocity); // thread safe
 
     }

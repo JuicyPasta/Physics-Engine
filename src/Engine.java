@@ -24,7 +24,7 @@ public class Engine implements Runnable{
     public void run() {
         while (true){
             try {
-                Thread.sleep(1);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

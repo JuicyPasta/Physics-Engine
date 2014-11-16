@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * Created by Kyle on 11/13/2014.
  */
 public class Physics{
-    double GRAV_CONST = .01;
+    double GRAV_CONST = 1;
     ArrayList<Piston> arr; // we wont need this
 
     Physics(ArrayList<Piston> arr){
@@ -19,8 +19,15 @@ public class Physics{
             if (p.id != self.id) { // so we don't calculate the gravity to itself
                 double distance = distance(self, p);
                 double force = GRAV_CONST * self.mass() * p.mass() / (distance * distance);
-                double angle = angle(self, p);
-                acc.basicAdd(getAcceleration(self, force, angle));
+                // Makes a pair that points toward the other piston
+                Pair direction = new Pair (p.position.x-self.position.x,p.position.y-self.position.y);
+                // Converts the pair into a unit pair
+                direction.convertUnit();
+                // Multiplies the unit by the force
+                direction.multiplyScalar(force);
+                // Converts the force into acceleration
+                direction.divideScalar(self.mass());
+                acc.basicAdd(direction);
             }
         }
         return acc;
@@ -39,6 +46,7 @@ public class Physics{
         v.y += force * Math.sin(angle) / b.mass();
         return v;
     }
+
     public void update(){
         for (int i = 0; i < arr.size(); i++){
             for (int j = i + 1; j < arr.size(); j++){
@@ -58,4 +66,5 @@ public class Physics{
         }
         //for (int i = 0; i < arr.size(); i++) arr.get(i).update();
     }
+
 }
