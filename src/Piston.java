@@ -44,12 +44,12 @@ public class Piston {
         if (position.x + velocity.x - shape.lengthToEdge(Math.PI) < 0 || position.x + velocity.x + shape.lengthToEdge(0) >= Main.SIZE){
             velocity.x *= -1;
         }
-        if (position.y + velocity.y - shape.lengthToEdge(Math.PI/2) < 0 || position.x + velocity.y + shape.lengthToEdge(3*Math.PI/2) >= Main.SIZE){
+        if (position.y + velocity.y - shape.lengthToEdge(Math.PI/2) < 0 || position.y + velocity.y + shape.lengthToEdge(3*Math.PI/2) >= Main.SIZE){
             velocity.y *= -1;
         }
 
         Pair gravAcc = phy.getGrav(this,others);
-        addPair(velocity, gravAcc); // thread safe
+        //addPair(velocity, gravAcc); // thread safe
         addPair(position, velocity); // thread safe
 
     }
