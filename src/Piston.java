@@ -10,6 +10,7 @@ public class Piston {
     private double x,y; //TODO: ensure thread-safe
     Pair position;
     Pair velocity;
+    Pair acc;
     double rot;
     double vrot;
     int density;
@@ -28,6 +29,7 @@ public class Piston {
         this.density = density;
         this.phy=phy;
         this.id=id;
+        acc = new Pair(0,0);
 
     }
 
@@ -48,9 +50,11 @@ public class Piston {
             velocity.y *= -1;
         }
 
-        Pair gravAcc = phy.getGrav(this,others);
-        System.out.println(id + " " + gravAcc);
-        addPair(velocity, gravAcc); // thread safe
+        //Pair gravAcc = phy.getGrav(this,others);
+        //System.out.println(id + " " + gravAcc);
+        //addPair(velocity, gravAcc); // thread safe
+        addPair(velocity, acc); // thread safe
+        acc.multiplyScalar(0);
         addPair(position, velocity); // thread safe
 
     }

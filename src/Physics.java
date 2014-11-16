@@ -4,13 +4,36 @@ import java.util.ArrayList;
  * Created by Kyle on 11/13/2014.
  */
 public class Physics{
-    double GRAV_CONST = 1;
+    double GRAV_CONST = .005;
     ArrayList<Piston> arr; // we wont need this
 
     Physics(ArrayList<Piston> arr){
         this.arr = arr;
     }
     public Physics () {}
+
+    //im thinking this would be a better way to do gravity
+    public void updateGrav (ArrayList <Piston> pistons){
+        for (int i = 0; i < pistons.size(); i++)
+            for (int j = i +1; j < pistons.size();j++){
+                double distance = distance(pistons.get(i), pistons.get(j));
+                double force = GRAV_CONST * pistons.get(i).mass() * pistons.get(j).mass() / (distance * distance);
+                // Makes a pair that points toward the other piston
+                Pair direction = new Pair (pistons.get(j).position.x-pistons.get(i).position.x,pistons.get(j).position.y
+                        -pistons.get(i).position.y);
+                // Converts the pair into a unit pair
+                direction.convertUnit();
+                // Multiplies the unit by the force
+                direction.multiplyScalar(force);
+                Pair dir2 = new Pair( -direction.x,-direction.y);
+                // Converts the force into acceleration
+                direction.divideScalar(pistons.get(i).mass());
+                dir2.divideScalar(pistons.get(j).mass());
+
+                pistons.get(i).acc.basicAdd(direction);
+                pistons.get(j).acc.basicAdd(dir2);
+            }
+    }
 
     // returns the acceration of gravity acting on a piston
     public Pair getGrav (Piston self, ArrayList <Piston> others){
