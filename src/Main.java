@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 /**
@@ -12,8 +13,8 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<Piston> arr = new ArrayList<Piston>();
         phy = new Physics();
-        Piston p = new Piston(new Pair(200,200),new Pair(.1,0),0,0,1,new Circle(15),arr,phy,0);
-        Piston p1 = new Piston(new Pair(200,300),new Pair(-.1,0),0,0,1,new Circle(15),arr,phy,1);
+        Piston p = new Piston(new Pair(200,200),new Pair(.1,0),0,0,1,new Circle(15),arr,phy);
+        Piston p1 = new Piston(new Pair(200,300),new Pair(-.1,0),0,0,1,new Circle(15),arr,phy);
         //Piston p2 = new Piston(new Pair (201,150),new Pair(.4,.1),0,1,1,new Circle(25),arr,phy,2);
 
         arr.add(p);
@@ -22,6 +23,8 @@ public class Main {
 
         ge = new GraphicEngine(arr);
         e = new Engine(arr);
+        MouseListener mouseListener = new MasterListener(e,ge,arr,phy);
+        ge.addMouseListener(mouseListener);
         Thread t1 = new Thread(ge);
         Thread t2 = new Thread(e);
         t1.start();
