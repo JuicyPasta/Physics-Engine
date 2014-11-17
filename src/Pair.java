@@ -21,8 +21,12 @@ public class Pair {
     }
     public Pair convertUnit(){
         double r = Math.sqrt(x*x+y*y);
-        x /= r;
-        y /= r;
+        if (x != 0) {
+            x /= r;
+        }
+        if (y != 0) {
+            y /= r;
+        }
         return this;
     }
     public Pair multiplyScalar(double scal){
@@ -31,9 +35,21 @@ public class Pair {
         return this;
     }
     public Pair divideScalar(double scal){
+        if (scal==0){
+            System.out.println("you tried to divide by 0 in divideScalar()");
+            return this;
+        }
         x /= scal;
         y /= scal;
         return this;
+    }
+    public Pair getDifference(Pair other){
+        this.x = other.x - this.x;
+        this.y = other.y - this.y;
+        return this;
+    }
+    public Pair getCopy(){
+        return new Pair (this.x,this.y);
     }
     public String toString(){
         return ("x: " + x + " y: " + y);
