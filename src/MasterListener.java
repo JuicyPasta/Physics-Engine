@@ -58,13 +58,14 @@ public class MasterListener implements KeyListener, MouseListener {
                     state = 1;
                     break;
                 case 1:
-                    r = (int) Math.sqrt( Math.pow(startX - e.getX(), 2) +  Math.pow(startY - e.getY(), 2));
+                    r = (int) (Math.sqrt( Math.pow(startX - e.getX(), 2) +  Math.pow(startY - e.getY(), 2))/2);
                     if (r > 0){
                         state = 2;
                     }
                     break;
                 case 2:
-                    arr.add(new Piston(new Pair(startX,startY),new Pair(startX - e.getX()/100,startY - e.getY()/100),0,0,1, new Circle(r),arr,physics));
+                    arr.add(new Piston(new Pair(startX,startY),new Pair(( e.getX()-startX)/100, ( e.getY()-startY )/100),
+                            0,0,1, new Circle(r),physics));
                     state = 0;
                     break;
             }

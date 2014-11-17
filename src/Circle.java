@@ -21,7 +21,7 @@ public class Circle extends Shape {
     }
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);
-        g.drawOval((int)position.x,(int)position.y,(int)r,(int)r);
+        g.drawOval((int)position.x,(int)position.y,2*(int)r,2*(int)r);
     }
 
     @Override

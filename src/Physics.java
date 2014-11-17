@@ -76,9 +76,34 @@ public class Physics{
                 if (arr.get(i).shape instanceof Circle && arr.get(j).shape instanceof Circle) {
                     Circle c1 = (Circle) arr.get(i).shape;
                     Circle c2 = (Circle) arr.get(j).shape;
-                    if (Math.sqrt(Math.pow(arr.get(i).position.x - arr.get(j).position.x, 2) + Math.pow(arr.get(i).position.y - arr.get(j).position.y, 2)) < c1.r + c2.r) {
+                    if (Math.sqrt(Math.pow(arr.get(i).position.x - arr.get(j).position.x + c1.r - c2.r, 2)
+                            + Math.pow(arr.get(i).position.y - arr.get(j).position.y + c1.r - c2.r, 2)) < c1.r + c2.r) {
+
+
+                        //correct formula is new v1 = (v1*(m1-m2) + 2 *m2*v2)/(m1 + m2)
+                        //its not working properly
+                        //TODO: Fix bouncing
+
+//                        Pair temp = arr.get(i).velocity.convertUnit();
+//                        double speed1 = (arr.get(i).velocity.r()*(arr.get(i).mass() - arr.get(j).mass())
+//                                + (arr.get(j).velocity.r()*(arr.get(j).mass()*2)))
+//                                /(arr.get(i).mass() + arr.get(j).mass());
+//
+//                        arr.get(i).velocity = arr.get(j).velocity.convertUnit();
+//                        double speed2 = (arr.get(j).velocity.r()*(arr.get(j).mass() - arr.get(i).mass())
+//                                + (arr.get(i).velocity.r()*(arr.get(i).mass()*2)))
+//                                /(arr.get(i).mass() + arr.get(j).mass());
+//
+//                        arr.get(j).velocity = temp;
+//                        arr.get(i).velocity.multiplyScalar(speed1);
+//                        arr.get(j).velocity.multiplyScalar(speed2);
+
+
+                        //assumes they have the same mass
                         double tx = arr.get(i).velocity.x;
                         double ty = arr.get(i).velocity.y;
+
+
                         arr.get(i).velocity.x = arr.get(j).velocity.x;
                         arr.get(i).velocity.y = arr.get(j).velocity.y;
                         arr.get(j).velocity.x = tx;

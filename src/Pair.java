@@ -14,25 +14,35 @@ public class Pair {
         this.x=0;
         this.y=0;
     }
-    public void basicAdd(Pair other){
+    public Pair basicAdd(Pair other){
         this.x += other.x;
         this.y += other.y;
+        return this;
     }
-    public void convertUnit(){
+    public Pair convertUnit(){
         double r = Math.sqrt(x*x+y*y);
         x /= r;
         y /= r;
+        return this;
     }
-    public void multiplyScalar(double scal){
+    public Pair multiplyScalar(double scal){
         x *= scal;
         y *= scal;
+        return this;
     }
-    public void divideScalar(double scal){
+    public Pair divideScalar(double scal){
         x /= scal;
         y /= scal;
+        return this;
     }
     public String toString(){
         return ("x: " + x + " y: " + y);
     }
 
+    public double r(){
+        return Math.sqrt( x * x +  y * y);
+    }
+    public double theta(){
+        return Math.atan(y/x);
+    }
 }

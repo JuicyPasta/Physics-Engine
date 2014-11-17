@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 //This is a generic engine object, all other objects should extend this
 public class Piston {
-    private double x,y; //TODO: ensure thread-safe
+    private double x,y; //left top corner
     Pair position;
     Pair velocity;
     Pair acc;
@@ -15,17 +15,17 @@ public class Piston {
     double vrot;
     int density;
     Shape shape;
-    ArrayList<Piston> others;
+    //ArrayList<Piston> others;
     Physics phy;
     int id;
-    public Piston (Pair position, Pair velocity, double rot, double vrot, int density, Shape shape, ArrayList<Piston> others, Physics phy){
+    public Piston (Pair position, Pair velocity, double rot, double vrot, int density, Shape shape, Physics phy){
         this.position=position;
         this.velocity=velocity;
         this.rot=rot;
         this.vrot=vrot;
         this.shape=shape;
         this.shape.setPos(position);
-        this.others=others;
+        //this.others=others;
         this.density = density;
         this.phy=phy;
         this.id=hashCode();
@@ -43,10 +43,10 @@ public class Piston {
     }
 
     public void update(){
-        if (position.x + velocity.x - shape.lengthToEdge(Math.PI) < 0 || position.x + velocity.x + shape.lengthToEdge(0) >= Main.SIZE){
+        if (position.x + velocity.x < 0 || position.x + velocity.x + 2 * shape.lengthToEdge(0) >= Main.SIZE){
             velocity.x *= -1;
         }
-        if (position.y + velocity.y - shape.lengthToEdge(Math.PI/2) < 0 || position.y + velocity.y + shape.lengthToEdge(3*Math.PI/2) >= Main.SIZE){
+        if (position.y + velocity.y < 0 || position.y + velocity.y + 2 * shape.lengthToEdge(3*Math.PI/2) >= Main.SIZE){
             velocity.y *= -1;
         }
 
