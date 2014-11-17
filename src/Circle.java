@@ -3,21 +3,18 @@ import java.awt.*;
 /**
  * Created by Jackson on 11/13/14.
  */
-public class Circle extends Shape {
+public class Circle extends Piston {
     double r;
 
-    Circle(){
-        this (false);
+    Circle(Pair position, Pair velocity, double rot, double vrot, int density, double r, Physics phy, boolean ghost, boolean showLine){
+        super(position, velocity, rot, vrot, density, phy, ghost, showLine);
+        this.r = r;
     }
-    Circle(boolean showLine){
-        this.showLine = showLine;
-        r = (int) (1+Math.random()*10);
-    }
-    Circle(double r) {
+    Circle(Pair position, Pair velocity, double rot, double vrot, int density, double r, Physics phy){
+        super(position, velocity, rot, vrot, density, phy);
         this.r = r;
     }
 
-    @Override
     public double area(){
         return Math.PI * Math.pow(r,2);
     }
@@ -26,8 +23,22 @@ public class Circle extends Shape {
         g.drawOval((int)position.x,(int)position.y,2*(int)r,2*(int)r);
     }
 
-    @Override
     public double lengthToEdge(double angle) {
         return r;
+    }
+
+    public void update(){
+        if (position.x + velocity.x < 0 || position.x + velocity.x + 2 * lengthToEdge(0) >= Main.SIZE){
+            velocity.x *= -1;
+        }
+        if (position.y + velocity.y < 0 || position.y + velocity.y + 2 * lengthToEdge(3 * Math.PI / 2) >= Main.SIZE){
+            velocity.y *= -1;
+        }
+
+        super.update();
+
+    }
+    public double mass(){
+        return area()*density;
     }
 }

@@ -46,6 +46,8 @@ public class MasterListener implements KeyListener, MouseListener {
     }
 
     long time = System.currentTimeMillis();
+    double radius = 5;
+
     @Override
     public void mousePressed(MouseEvent e) {
 
@@ -53,17 +55,11 @@ public class MasterListener implements KeyListener, MouseListener {
             time = System.currentTimeMillis();
             switch (state){
                 case 0:
-                    mouseStart = new Pair(e.getX()-15,e.getY()-15);
-                    arr.add(new Piston(mouseStart, new Pair (0,0), 0, 0, 1, new Circle(15), physics, true, true));
+                    mouseStart = new Pair(e.getX(),e.getY()).subtractScalar(radius);
+                    arr.add(new Circle(mouseStart, new Pair (0,0), 0, 0, 1, radius, physics, true, true));
 
                     state = 1;
                     break;
-//                case 2:
-//                    r = (int) (Math.sqrt( Math.pow(startX - e.getX(), 2) +  Math.pow(startY - e.getY(), 2))/2);
-//                    if (r > 0){
-//                        state = 2;
-//                    }
-//                    break;
 
             }
         }
@@ -78,9 +74,9 @@ public class MasterListener implements KeyListener, MouseListener {
         switch (state){
             case 1:
                 Pair difference = mouseStart.getCopy();
-                difference.getDifference(new Pair(e.getX()-15,e.getY()-15)).divideScalar(500);
+                difference.getDifference(new Pair(e.getX(),e.getY()).subtractScalar(radius)).divideScalar(500);
                 // I will never know why this works
-                arr.add(new Piston(mouseStart, difference, 0, 0, 1, new Circle(15), physics));
+                arr.add(new Circle(mouseStart, difference, 0, 0, 1, radius, physics));
 
                 state = 0;
                 break;

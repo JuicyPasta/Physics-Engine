@@ -15,10 +15,10 @@ public class Physics{
     public void updateGrav (ArrayList <Piston> pistons){
         for (int i = 0; i < pistons.size(); i++)
             for (int j = i +1; j < pistons.size();j++) {
-                Circle c1 = (Circle) arr.get(i).shape;
-                Circle c2 = (Circle) arr.get(j).shape;
-                if ((!arr.get(i).ghost && !arr.get(j).ghost) && !(Math.sqrt(Math.pow(arr.get(i).position.x - arr.get(j).position.x + c1.r - c2.r, 2)
-                        + Math.pow(arr.get(i).position.y - arr.get(j).position.y + c1.r - c2.r, 2)) < c1.r + c2.r)) {
+                Circle a = (Circle)arr.get(i);
+                Circle b = (Circle)arr.get(j);
+                if ((!a.ghost && !b.ghost) && !(Math.sqrt(Math.pow(a.position.x - b.position.x + a.r - b.r, 2)
+                        + Math.pow(arr.get(i).position.y - arr.get(j).position.y + a.r - b.r, 2)) < a.r + b.r)) {
                     double distance = distance(pistons.get(i), pistons.get(j));
                     double force = GRAV_CONST * pistons.get(i).mass() * pistons.get(j).mass() / (distance * distance);
                     // Makes a pair that points toward the other piston
@@ -57,11 +57,11 @@ public class Physics{
     public void update(){
         for (int i = 0; i < arr.size(); i++){
             for (int j = i + 1; j < arr.size(); j++){
-                if ((!arr.get(i).ghost && !arr.get(j).ghost) && arr.get(i).shape instanceof Circle && arr.get(j).shape instanceof Circle) {
-                    Circle c1 = (Circle) arr.get(i).shape;
-                    Circle c2 = (Circle) arr.get(j).shape;
-                    if (Math.sqrt(Math.pow(arr.get(i).position.x - arr.get(j).position.x + c1.r - c2.r, 2)
-                            + Math.pow(arr.get(i).position.y - arr.get(j).position.y + c1.r - c2.r, 2)) < c1.r + c2.r) {
+                if ((!arr.get(i).ghost && !arr.get(j).ghost) && arr.get(i) instanceof Circle && arr.get(j) instanceof Circle) {
+                    Circle a = (Circle) arr.get(i);
+                    Circle b = (Circle) arr.get(j);
+                    if (Math.sqrt(Math.pow(a.position.x - b.position.x + a.r - b.r, 2)
+                            + Math.pow(a.position.y - b.position.y + a.r - b.r, 2)) < a.r + b.r) {
 
 
                         //correct formula is new v1 = (v1*(m1-m2) + 2 *m2*v2)/(m1 + m2)

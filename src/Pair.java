@@ -46,6 +46,16 @@ public class Pair {
         y /= scal;
         return this;
     }
+    public Pair addScalar(double scal){
+        x += scal;
+        y += scal;
+        return this;
+    }
+    public Pair subtractScalar(double scal){
+        x -= scal;
+        y -= scal;
+        return this;
+    }
     public Pair getDifference(Pair other){
         this.x = other.x - this.x;
         this.y = other.y - this.y;

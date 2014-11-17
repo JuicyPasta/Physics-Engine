@@ -20,16 +20,14 @@ public class Piston {
     //ArrayList<Piston> others;
     Physics phy;
     int id;
-    public Piston (Pair position, Pair velocity, double rot, double vrot, int density, Shape shape, Physics phy){
-        this (position, velocity, rot, vrot, density, shape, phy, false, false);
+    public Piston (Pair position, Pair velocity, double rot, double vrot, int density, Physics phy){
+        this (position, velocity, rot, vrot, density, phy, false, false);
     }
-    public Piston (Pair position, Pair velocity, double rot, double vrot, int density, Shape shape, Physics phy, boolean ghost, boolean showLine){
+    public Piston (Pair position, Pair velocity, double rot, double vrot, int density, Physics phy, boolean ghost, boolean showLine){
         this.position=position;
         this.velocity=velocity;
         this.rot=rot;
         this.vrot=vrot;
-        this.shape=shape;
-        this.shape.setPos(position);
         //this.others=others;
         this.density = density;
         this.phy=phy;
@@ -50,13 +48,6 @@ public class Piston {
     }
 
     public void update(){
-        if (position.x + velocity.x < 0 || position.x + velocity.x + 2 * shape.lengthToEdge(0) >= Main.SIZE){
-            velocity.x *= -1;
-        }
-        if (position.y + velocity.y < 0 || position.y + velocity.y + 2 * shape.lengthToEdge(3*Math.PI/2) >= Main.SIZE){
-            velocity.y *= -1;
-        }
-
         //Pair gravAcc = phy.getGrav(this,others);
         //System.out.println(id + " " + gravAcc);
         //addPair(velocity, gravAcc); // thread safe
@@ -67,11 +58,10 @@ public class Piston {
     }
 
     public double mass(){
-        return shape.area()*density;
+        return density;
     }
     public void draw(Graphics g){
-        shape.setPos(position);
-        shape.draw(g);
+
     }
 
     public void switchGhost(){
