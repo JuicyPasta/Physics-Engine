@@ -60,8 +60,8 @@ public class Physics{
                 if ((!arr.get(i).ghost && !arr.get(j).ghost) && arr.get(i) instanceof Circle && arr.get(j) instanceof Circle) {
                     Circle a = (Circle) arr.get(i);
                     Circle b = (Circle) arr.get(j);
-                    if (Math.sqrt(Math.pow(a.position.x - b.position.x + a.r - b.r, 2)
-                            + Math.pow(a.position.y - b.position.y + a.r - b.r, 2)) < a.r + b.r) {
+                    Pair diffPair = a.position.getCopy().getDifference(b.position);
+                    if (Math.pow(a.r+b.r,2)>= diffPair.x*diffPair.x + diffPair.y*diffPair.y){
 
 
                         //correct formula is new v1 = (v1*(m1-m2) + 2 *m2*v2)/(m1 + m2)

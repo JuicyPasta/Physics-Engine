@@ -46,7 +46,7 @@ public class MasterListener implements KeyListener, MouseListener {
     }
 
     long time = System.currentTimeMillis();
-    double radius = 5;
+    double radius = 15;
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -76,7 +76,7 @@ public class MasterListener implements KeyListener, MouseListener {
                 Pair difference = mouseStart.getCopy();
                 difference.getDifference(new Pair(e.getX(),e.getY()).subtractScalar(radius)).divideScalar(500);
                 // I will never know why this works
-                arr.add(new Circle(mouseStart, difference, 0, 0, 1, radius, physics));
+                arr.add(new Circle(mouseStart, difference, 0, 0, 1, radius, physics,false,true));
 
                 state = 0;
                 break;
