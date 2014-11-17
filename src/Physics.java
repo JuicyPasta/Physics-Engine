@@ -15,23 +15,28 @@ public class Physics{
     //im thinking this would be a better way to do gravity
     public void updateGrav (ArrayList <Piston> pistons){
         for (int i = 0; i < pistons.size(); i++)
-            for (int j = i +1; j < pistons.size();j++){
-                double distance = distance(pistons.get(i), pistons.get(j));
-                double force = GRAV_CONST * pistons.get(i).mass() * pistons.get(j).mass() / (distance * distance);
-                // Makes a pair that points toward the other piston
-                Pair direction = new Pair (pistons.get(j).position.x-pistons.get(i).position.x,pistons.get(j).position.y
-                        -pistons.get(i).position.y);
-                // Converts the pair into a unit pair
-                direction.convertUnit();
-                // Multiplies the unit by the force
-                direction.multiplyScalar(force);
-                Pair dir2 = new Pair( -direction.x,-direction.y);
-                // Converts the force into acceleration
-                direction.divideScalar(pistons.get(i).mass());
-                dir2.divideScalar(pistons.get(j).mass());
+            for (int j = i +1; j < pistons.size();j++) {
+                Circle c1 = (Circle) arr.get(i).shape;
+                Circle c2 = (Circle) arr.get(j).shape;
+                if (!(Math.sqrt(Math.pow(arr.get(i).position.x - arr.get(j).position.x + c1.r - c2.r, 2)
+                        + Math.pow(arr.get(i).position.y - arr.get(j).position.y + c1.r - c2.r, 2)) < c1.r + c2.r)) {
+                    double distance = distance(pistons.get(i), pistons.get(j));
+                    double force = GRAV_CONST * pistons.get(i).mass() * pistons.get(j).mass() / (distance * distance);
+                    // Makes a pair that points toward the other piston
+                    Pair direction = new Pair(pistons.get(j).position.x - pistons.get(i).position.x, pistons.get(j).position.y
+                            - pistons.get(i).position.y);
+                    // Converts the pair into a unit pair
+                    direction.convertUnit();
+                    // Multiplies the unit by the force
+                    direction.multiplyScalar(force);
+                    Pair dir2 = new Pair(-direction.x, -direction.y);
+                    // Converts the force into acceleration
+                    direction.divideScalar(pistons.get(i).mass());
+                    dir2.divideScalar(pistons.get(j).mass());
 
-                pistons.get(i).acc.basicAdd(direction);
-                pistons.get(j).acc.basicAdd(dir2);
+                    pistons.get(i).acc.basicAdd(direction);
+                    pistons.get(j).acc.basicAdd(dir2);
+            }
             }
     }
 
@@ -103,11 +108,11 @@ public class Physics{
                         double tx = arr.get(i).velocity.x;
                         double ty = arr.get(i).velocity.y;
 
-
-                        arr.get(i).velocity.x = arr.get(j).velocity.x;
-                        arr.get(i).velocity.y = arr.get(j).velocity.y;
-                        arr.get(j).velocity.x = tx;
-                        arr.get(j).velocity.y = ty;
+                        // *.9 is friction/ energy lost
+                        arr.get(i).velocity.x = arr.get(j).velocity.x*.9;
+                        arr.get(i).velocity.y = arr.get(j).velocity.y*.9;
+                        arr.get(j).velocity.x = tx*.9;
+                        arr.get(j).velocity.y = ty*.9;
                     }
                 }
             }

@@ -36,7 +36,7 @@ public class MasterListener implements KeyListener, MouseListener {
     }
 
 
-    int startX, startY;
+    double startX, startY;
     int r;
     int state = 0;
 
@@ -53,9 +53,9 @@ public class MasterListener implements KeyListener, MouseListener {
             time = System.currentTimeMillis();
             switch (state){
                 case 0:
-                    startX = e.getX();
-                    startY = e.getY();
-                    state = 1;
+                    startX = e.getX()-15;
+                    startY = e.getY()-15;
+                    state = 2;
                     break;
                 case 1:
                     r = (int) (Math.sqrt( Math.pow(startX - e.getX(), 2) +  Math.pow(startY - e.getY(), 2))/2);
@@ -65,7 +65,7 @@ public class MasterListener implements KeyListener, MouseListener {
                     break;
                 case 2:
                     arr.add(new Piston(new Pair(startX,startY),new Pair(( e.getX()-startX)/100, ( e.getY()-startY )/100),
-                            0,0,1, new Circle(r),physics));
+                            0,0,1, new Circle(15),physics));
                     state = 0;
                     break;
             }
