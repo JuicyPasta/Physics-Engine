@@ -12,7 +12,6 @@ public class Physics{
     }
     public Physics () {}
 
-    //im thinking this would be a better way to do gravity
     public void updateGrav (ArrayList <Piston> pistons){
         for (int i = 0; i < pistons.size(); i++)
             for (int j = i +1; j < pistons.size();j++) {
@@ -37,29 +36,9 @@ public class Physics{
                     pistons.get(i).acc.basicAdd(direction);
                     pistons.get(j).acc.basicAdd(dir2);
             }
-            }
+        }
     }
 
-    // returns the acceration of gravity acting on a piston
-    public Pair getGrav (Piston self, ArrayList <Piston> others){
-        Pair acc = new Pair();
-        for (Piston p : others){
-            if (p.id != self.id) { // so we don't calculate the gravity to itself
-                double distance = distance(self, p);
-                double force = GRAV_CONST * self.mass() * p.mass() / (distance * distance);
-                // Makes a pair that points toward the other piston
-                Pair direction = new Pair (p.position.x-self.position.x,p.position.y-self.position.y);
-                // Converts the pair into a unit pair
-                direction.convertUnit();
-                // Multiplies the unit by the force
-                direction.multiplyScalar(force);
-                // Converts the force into acceleration
-                direction.divideScalar(self.mass());
-                acc.basicAdd(direction);
-            }
-        }
-        return acc;
-    }
     public double distance(Piston a, Piston b){
         return Math.sqrt( Math.pow(a.position.x - b.position.x, 2) +  Math.pow(a.position.y - b.position.y, 2));
     }
