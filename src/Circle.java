@@ -7,10 +7,12 @@ public class Circle extends Shape {
     double r;
 
     Circle(){
-
+        this (false);
+    }
+    Circle(boolean showLine){
+        this.showLine = showLine;
         r = (int) (1+Math.random()*10);
     }
-
     Circle(double r) {
         this.r = r;
     }

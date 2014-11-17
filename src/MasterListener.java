@@ -54,6 +54,8 @@ public class MasterListener implements KeyListener, MouseListener {
             switch (state){
                 case 0:
                     mouseStart = new Pair(e.getX()-15,e.getY()-15);
+                    arr.add(new Piston(mouseStart, new Pair (0,0), 0, 0, 1, new Circle(15), physics, true, true));
+
                     state = 1;
                     break;
 //                case 2:
@@ -76,12 +78,10 @@ public class MasterListener implements KeyListener, MouseListener {
         switch (state){
             case 1:
                 Pair difference = mouseStart.getCopy();
-
-                difference.getDifference(new Pair(e.getX()-15,e.getY()-15)).convertUnit();
+                difference.getDifference(new Pair(e.getX()-15,e.getY()-15)).divideScalar(500);
+                // I will never know why this works
                 arr.add(new Piston(mouseStart, difference, 0, 0, 1, new Circle(15), physics));
 
-                //arr.add(new Piston(new Pair(startX,startY),new Pair(( e.getX()-startX)/100, ( e.getY()-startY )/100),
-                //        0,0,1, new Circle(15),physics));
                 state = 0;
                 break;
         }

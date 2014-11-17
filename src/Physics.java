@@ -17,7 +17,7 @@ public class Physics{
             for (int j = i +1; j < pistons.size();j++) {
                 Circle c1 = (Circle) arr.get(i).shape;
                 Circle c2 = (Circle) arr.get(j).shape;
-                if (!(Math.sqrt(Math.pow(arr.get(i).position.x - arr.get(j).position.x + c1.r - c2.r, 2)
+                if ((!arr.get(i).ghost && !arr.get(j).ghost) && !(Math.sqrt(Math.pow(arr.get(i).position.x - arr.get(j).position.x + c1.r - c2.r, 2)
                         + Math.pow(arr.get(i).position.y - arr.get(j).position.y + c1.r - c2.r, 2)) < c1.r + c2.r)) {
                     double distance = distance(pistons.get(i), pistons.get(j));
                     double force = GRAV_CONST * pistons.get(i).mass() * pistons.get(j).mass() / (distance * distance);
@@ -40,7 +40,7 @@ public class Physics{
     }
 
     public double distance(Piston a, Piston b){
-        return Math.sqrt( Math.pow(a.position.x - b.position.x, 2) +  Math.pow(a.position.y - b.position.y, 2));
+        return Math.sqrt(Math.pow(a.position.x - b.position.x, 2) + Math.pow(a.position.y - b.position.y, 2));
     }
 
     public double angle(Piston a, Piston b){
@@ -57,7 +57,7 @@ public class Physics{
     public void update(){
         for (int i = 0; i < arr.size(); i++){
             for (int j = i + 1; j < arr.size(); j++){
-                if (arr.get(i).shape instanceof Circle && arr.get(j).shape instanceof Circle) {
+                if ((!arr.get(i).ghost && !arr.get(j).ghost) && arr.get(i).shape instanceof Circle && arr.get(j).shape instanceof Circle) {
                     Circle c1 = (Circle) arr.get(i).shape;
                     Circle c2 = (Circle) arr.get(j).shape;
                     if (Math.sqrt(Math.pow(arr.get(i).position.x - arr.get(j).position.x + c1.r - c2.r, 2)

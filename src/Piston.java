@@ -15,10 +15,15 @@ public class Piston {
     double vrot;
     int density;
     Shape shape;
+    boolean ghost;
+    boolean showLine;
     //ArrayList<Piston> others;
     Physics phy;
     int id;
     public Piston (Pair position, Pair velocity, double rot, double vrot, int density, Shape shape, Physics phy){
+        this (position, velocity, rot, vrot, density, shape, phy, false, false);
+    }
+    public Piston (Pair position, Pair velocity, double rot, double vrot, int density, Shape shape, Physics phy, boolean ghost, boolean showLine){
         this.position=position;
         this.velocity=velocity;
         this.rot=rot;
@@ -30,6 +35,8 @@ public class Piston {
         this.phy=phy;
         this.id=hashCode();
         acc = new Pair(0,0);
+        this.ghost = ghost;
+        this.showLine = showLine;
 
     }
 
@@ -67,6 +74,12 @@ public class Piston {
         shape.draw(g);
     }
 
+    public void switchGhost(){
+        ghost = !ghost;
+    }
+    public void switchShowLine(){
+        showLine = !showLine;
+    }
     @Override
     public String toString() {
         return "Piston{" +

@@ -27,6 +27,7 @@ public class GraphicEngine extends JFrame implements Runnable {
         BufferStrategy bs = getBufferStrategy();
         Graphics g = bs.getDrawGraphics();
         paintNow(g);
+
         g.dispose();
         bs.show();
     }

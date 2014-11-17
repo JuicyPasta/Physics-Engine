@@ -19,8 +19,11 @@ public class Pair {
         this.y += other.y;
         return this;
     }
+    public double getRad (){
+        return Math.sqrt(x*x+y*y);
+    }
     public Pair convertUnit(){
-        double r = Math.sqrt(x*x+y*y);
+        double r = getRad();
         if (x != 0) {
             x /= r;
         }
