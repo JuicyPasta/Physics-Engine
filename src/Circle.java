@@ -21,6 +21,12 @@ public class Circle extends Piston {
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);
         g.drawOval((int)position.x,(int)position.y,2*(int)r,2*(int)r);
+        if(showLine){
+            Pair posCop = position.getCopy();
+            Pair velCop = velocity.getCopy().multiplyScalar(100).addScalar(r);
+            Pair end = posCop.basicAdd(velCop);
+            g.drawLine((int)(position.x+r),(int)(position.y+r),(int)end.x,(int)end.y);
+        }
     }
 
     public double lengthToEdge(double angle) {
@@ -38,6 +44,7 @@ public class Circle extends Piston {
         super.update();
 
     }
+
     public double mass(){
         return area()*density;
     }
