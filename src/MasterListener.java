@@ -74,7 +74,7 @@ public class MasterListener implements KeyListener, MouseListener {
         switch (state){
             case 1:
                 Pair difference = mouseStart.getCopy();
-                difference.getDifference(new Pair(e.getX(),e.getY()).subtractScalar(radius)).divideScalar(500);
+                difference.getDifference(new Pair(e.getX(),e.getY()).subtractScalar(radius)).divideScalar(50);
                 // I will never know why this works
                 arr.add(new Circle(mouseStart, difference, 0, 0, 1, radius, physics,false,true));
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * Created by Kyle on 11/13/2014.
  */
 public class Physics{
-    double GRAV_CONST = .005;
+    double GRAV_CONST = 5;
     ArrayList<Piston> arr; // we wont need this
 
     Physics(ArrayList<Piston> arr){
@@ -88,10 +88,10 @@ public class Physics{
                         double ty = arr.get(i).velocity.y;
 
                         // *.9 is friction/ energy lost
-                        arr.get(i).velocity.x = arr.get(j).velocity.x*.9;
-                        arr.get(i).velocity.y = arr.get(j).velocity.y*.9;
-                        arr.get(j).velocity.x = tx*.9;
-                        arr.get(j).velocity.y = ty*.9;
+                        arr.get(i).velocity.x = arr.get(j).velocity.x;
+                        arr.get(i).velocity.y = arr.get(j).velocity.y;
+                        arr.get(j).velocity.x = tx;
+                        arr.get(j).velocity.y = ty;
                     }
                 }
             }

@@ -6,15 +6,15 @@ import java.util.ArrayList;
  * Created by Kyle on 11/13/2014.
  */
 public class Main {
-    public static int SIZE = 500;
+    public static int SIZE = 800;
     static GraphicEngine ge;
     static Engine e;
     static Physics phy;
     public static void main(String[] args) {
         ArrayList<Piston> arr = new ArrayList<Piston>();
         phy = new Physics();
-        Piston p = new Circle(new Pair(200,200),new Pair(.1,0),0,0,1,15,phy,false,true);
-        Piston p1 = new Circle(new Pair(200,300),new Pair(-.1,0),0,0,1,15,phy,false,true);
+        Piston p = new Circle(new Pair(200,200),new Pair(5,0),0,0,1,15,phy,false,true);
+        Piston p1 = new Circle(new Pair(200,300),new Pair(-7,0),0,0,1,15,phy,false,true);
         //Piston p2 = new Piston(new Pair (201,150),new Pair(.4,.1),0,1,1,new Circle(25),arr,phy);
 
         arr.add(p);

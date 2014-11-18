@@ -23,14 +23,17 @@ public class Engine implements Runnable{
 
     @Override
     public void run() {
+        long lastTime = System.currentTimeMillis();
         while (true){
             try {
-                Thread.sleep(1);
+                //1000/60 - time it took to complete last cycle
+                long diff = System.currentTimeMillis() - lastTime;
+                Thread.sleep(1000/60-diff);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            lastTime = System.currentTimeMillis();
             update();
-
         }
     }
 }
