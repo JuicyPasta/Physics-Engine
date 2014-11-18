@@ -15,7 +15,7 @@ public class Engine implements Runnable{
 
     public synchronized void update(){
         phys.update();
-        phys.updateGrav(pistons);
+        //phys.updateGrav(pistons);
         for (Piston p: pistons){
             p.update();
         }
@@ -31,7 +31,7 @@ public class Engine implements Runnable{
 
                 //1000/60 - time it took to complete last cycle
                 long diff = System.currentTimeMillis() - lastTime;
-                Thread.sleep(1000/60-diff);
+                Thread.sleep(1000/60-diff); //catch negative
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
