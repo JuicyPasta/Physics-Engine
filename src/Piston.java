@@ -18,19 +18,19 @@ public abstract class Piston {
     boolean ghost;
     boolean showLine;
     //ArrayList<Piston> others;
-    Physics phy;
+    //Physics phy;
     int id;
-    public Piston (Pair position, Pair velocity, double rot, double vrot, int density, Physics phy){
-        this (position, velocity, rot, vrot, density, phy, false, false);
+    public Piston (Pair position, Pair velocity, double rot, double vrot, int density){
+        this (position, velocity, rot, vrot, density, false, false);
     }
-    public Piston (Pair position, Pair velocity, double rot, double vrot, int density, Physics phy, boolean ghost, boolean showLine){
+    public Piston (Pair position, Pair velocity, double rot, double vrot, int density, boolean ghost, boolean showLine){
         this.position=position;
         this.velocity=velocity;
         this.rot=rot;
         this.vrot=vrot;
-        //this.others=others;
+
         this.density = density;
-        this.phy=phy;
+
         this.id=hashCode();
         acc = new Pair(0,0);
         this.ghost = ghost;

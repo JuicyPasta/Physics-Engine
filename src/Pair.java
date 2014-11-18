@@ -72,6 +72,12 @@ public class Pair {
         return Math.sqrt( x * x +  y * y);
     }
     public double theta(){
+
         return Math.atan(y/x);
+    }
+
+    @Override
+    public int hashCode(){
+        return (((int)x) >> 16) | ((int)y);
     }
 }

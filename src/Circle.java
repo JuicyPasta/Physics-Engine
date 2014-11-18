@@ -6,12 +6,12 @@ import java.awt.*;
 public class Circle extends Piston {
     double r;
 
-    Circle(Pair position, Pair velocity, double rot, double vrot, int density, double r, Physics phy, boolean ghost, boolean showLine){
-        super(position, velocity, rot, vrot, density, phy, ghost, showLine);
+    Circle(Pair position, Pair velocity, double rot, double vrot, int density, double r, boolean ghost, boolean showLine){
+        super(position, velocity, rot, vrot, density, ghost, showLine);
         this.r = r;
     }
-    Circle(Pair position, Pair velocity, double rot, double vrot, int density, double r, Physics phy){
-        super(position, velocity, rot, vrot, density, phy);
+    Circle(Pair position, Pair velocity, double rot, double vrot, int density, double r){
+        super(position, velocity, rot, vrot, density);
         this.r = r;
     }
 

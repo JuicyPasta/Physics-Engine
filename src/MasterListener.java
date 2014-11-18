@@ -50,13 +50,16 @@ public class MasterListener implements KeyListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON2){
+            //remove item
+        }
 
         if (time + 100 < System.currentTimeMillis() && e.getButton() == MouseEvent.BUTTON1){
             time = System.currentTimeMillis();
             switch (state){
                 case 0:
                     mouseStart = new Pair(e.getX(),e.getY()).subtractScalar(radius);
-                    arr.add(new Circle(mouseStart, new Pair (0,0), 0, 0, 1, radius, physics, true, true));
+                    arr.add(new Circle(mouseStart, new Pair (0,0), 0, 0, 1, radius, true, true));
 
                     state = 1;
                     break;
@@ -76,7 +79,9 @@ public class MasterListener implements KeyListener, MouseListener {
                 Pair difference = mouseStart.getCopy();
                 difference.getDifference(new Pair(e.getX(),e.getY()).subtractScalar(radius)).divideScalar(50);
                 // I will never know why this works
-                arr.add(new Circle(mouseStart, difference, 0, 0, 1, radius, physics,false,true));
+                // need to get rid of old 'ghost' circle; below is why it works
+                //arr.add(new Circle(mouseStart.getCopy(), difference, 0, 0, 1, radius,false,true));
+                arr.add(new Circle(mouseStart, difference, 0, 0, 1, radius,false,true));
 
                 state = 0;
                 break;
