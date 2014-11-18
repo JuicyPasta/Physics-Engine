@@ -26,6 +26,9 @@ public class Engine implements Runnable{
         long lastTime = System.currentTimeMillis();
         while (true){
             try {
+
+                //TODO: better way to do this is to define speed as a pixels/ms and pass in (msSinceLastPass), that way you get max refresh rate
+
                 //1000/60 - time it took to complete last cycle
                 long diff = System.currentTimeMillis() - lastTime;
                 Thread.sleep(1000/60-diff);

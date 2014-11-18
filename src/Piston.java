@@ -6,7 +6,7 @@ import java.util.ArrayList;
  */
 
 //This is a generic engine object, all other objects should extend this
-public class Piston {
+public abstract class Piston {
     private double x,y; //left top corner
     Pair position;
     Pair velocity;
@@ -57,12 +57,11 @@ public class Piston {
 
     }
 
-    public double mass(){
-        return density;
-    }
-    public void draw(Graphics g){
+    public abstract double mass();
 
-    }
+    public abstract void draw(Graphics g);
+
+
 
     public void switchGhost(){
         ghost = !ghost;
