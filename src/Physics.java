@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Kyle on 11/13/2014.
@@ -54,20 +56,82 @@ public class Physics{
         return v;
     }
 
-    public void resolveCollisions(){
+    public Pair resolveCollisions(){
+
+        Set<Pair> lines = new HashSet<Pair>();
         for (int i = 0; i < arr.size(); i++){
-            for (int j = i + 1; j < arr.size(); j++){
-                Piston a = arr.get(i);
-                Piston b = arr.get(j);
-                // for storing all of the lines we are going to project points onto
-                ArrayList <Pair> lines = new ArrayList <Pair> ();
+            Piston a = arr.get(i);
 
-
-
+            // creates pairs parallel to the vector from polygon corners to the circle center
+            if (a instanceof Circle){
+                for (Piston p : arr){
+                    if (p instanceof Polygon){
+                        Polygon pa = (Polygon)(p);
+                        for (int q = 0; q < pa.pts.length; q ++){
+                            lines.add(pa.pts[q].getCopy().getDifference(a.position));
+                        }
+                    }
+                }
             }
+            // creates pairs normal to the sides of polygons
+            if (a instanceof Polygon){
+                Polygon pa = (Polygon)(a);
+                for (int q = 0; q < pa.pts.length; q ++){
+                    lines.add(pa.pts[(i+1)%pa.pts.length].getCopy().getDifference(pa.pts[i]).getNorm());
+                }
+            }
+            // switches the places of the two pistons to avoid redundant code, will be triggered by next if
+
+            // done populating lines
+
+            //project the points of the two pistons onto a line
+
+
         }
+        System.out.println("~~~~~~~");
+        for (Pair pr : lines){
+            System.out.println(pr.toString());
+        }
+        return new Pair (0,0);
+
     }
 
+    // returns the intersection depth along the projection vector
+    public double handleProjection (Pair norm, Piston a, Piston b){
+        Pair mma;
+        Pair mmb;
+        if (a instanceof Circle){
+            mma = handleProjCirc (norm, (Circle)a);
+        }else{
+            mma = handleProjPoly (norm, (Polygon)a);
+        }
+        if (b instanceof Circle){
+            mmb = handleProjCirc (norm, (Circle)b);
+        }else{
+            mmb = handleProjPoly (norm, (Polygon)b);
+        }
+        // x is max, y is min
+        return Math.abs(Math.min(mma.x - mmb.y, mmb.x - mma.y));
+    }
+
+    public Pair handleProjCirc (Pair norm, Circle a){
+        return new Pair (a.r, -a.r);
+    }
+    public Pair handleProjPoly (Pair norm, Polygon b){
+        double min = Double.NaN;
+        double max = Double.NaN;
+        for (int i = 0; i < b.pts.length; i ++){
+            Pair origin = b.pts[(i+1)%b.pts.length].getCopy().getDifference(b.pts[i]).convertUnit();
+            double x = norm.getCopy().getProjX(origin);
+            if (max == Double.NaN || x > max){
+                max = x;
+            }
+            if (min == Double.NaN || x < min) {
+                min = x;
+            }
+        }
+        return new Pair (max,min);
+    }
     public void update(){
         for (int i = 0; i < arr.size(); i++){
             for (int j = i + 1; j < arr.size(); j++){

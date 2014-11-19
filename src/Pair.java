@@ -4,7 +4,7 @@
  * handle vector math here.
  */
 
-public class Pair {
+public class Pair{
     double x,y;
     public Pair (double x, double y){
         this.x=x;
@@ -61,9 +61,18 @@ public class Pair {
         this.y = other.y - this.y;
         return this;
     }
+    public Pair getNorm(){
+        double temp = this.x;
+        this.x = -this.y;
+        this.y = temp;
+        return this;
+    }
+
+
     public Pair getCopy(){
         return new Pair (this.x,this.y);
     }
+
     public String toString(){
         return ("x: " + x + " y: " + y);
     }
@@ -71,23 +80,19 @@ public class Pair {
     public double r(){
         return Math.sqrt( x * x +  y * y);
     }
-    public double theta(){
 
-        return Math.atan(y/x);
-    }
+    public double theta(){ return Math.atan(y/x); }
+
     public double dotProduct(Pair b){
         return this.x*b.x + this.y*b.y;
     }
+
     //THIS MUST BE A UNIT VECTOR (for optimization purposes)
     public double getProjX (Pair projectee){
         return this.dotProduct(projectee) * this.x;
     }
-    public double getProjY (Pair projectee){
-        return this.dotProduct(projectee) * this.y;
-    }
-    //proj.x = ( dp / (b.x*b.x + b.y*b.y) ) * b.x;
-    //proj.y = ( dp / (b.x*b.x + b.y*b.y) ) * b.y;
-    @Override
+    public double getProjY (Pair projectee){ return this.dotProduct(projectee) * this.y; }
+
     public int hashCode(){
         return (((int)x) >> 16) | ((int)y);
     }
