@@ -68,7 +68,7 @@ public class Physics{
                     if (p instanceof Polygon){
                         Polygon pa = (Polygon)(p);
                         for (int q = 0; q < pa.pts.length; q ++){
-                            lines.add(pa.pts[q].getCopy().getDifference(a.position));
+                            lines.add(a.position.getCopy().getDifference(pa.pts[q]));
                         }
                     }
                 }
@@ -77,16 +77,9 @@ public class Physics{
             if (a instanceof Polygon){
                 Polygon pa = (Polygon)(a);
                 for (int q = 0; q < pa.pts.length; q ++){
-                    lines.add(pa.pts[(i+1)%pa.pts.length].getCopy().getDifference(pa.pts[i]).getNorm());
+                    lines.add(pa.pts[(q+1)%pa.pts.length].getCopy().getDifference(pa.pts[q]).getNorm());
                 }
             }
-            // switches the places of the two pistons to avoid redundant code, will be triggered by next if
-
-            // done populating lines
-
-            //project the points of the two pistons onto a line
-
-
         }
         System.out.println("~~~~~~~");
         for (Pair pr : lines){

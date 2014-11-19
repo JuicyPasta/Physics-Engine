@@ -63,8 +63,8 @@ public class Pair{
     }
     public Pair getNorm(){
         double temp = this.x;
-        this.x = -this.y;
-        this.y = temp;
+        this.x = this.y;
+        this.y = -temp;
         return this;
     }
 
