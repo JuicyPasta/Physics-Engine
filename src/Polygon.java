@@ -9,8 +9,7 @@ public class Polygon extends Piston {
     int sides;
     double sideLength;
     double radius;
-    int[] x;
-    int[] y;
+    Pair[] pts;
 
     public Polygon(Pair position, Pair velocity, double rot, double vrot, boolean ghost, boolean showLine, int sides, double sideLength) {
         super(position, velocity, rot, vrot, 1, ghost, showLine);
@@ -18,17 +17,16 @@ public class Polygon extends Piston {
         this.sideLength = sideLength;
         radius = sideLength/(2*Math.sin(Math.PI/sides));
 
-        x = new int[sides];
-        y = new int[sides];
+        pts = new Pair[sides];
         coordsUpdate();
     }
 
     public void update(){
-        for (int i = 0; i < x.length; i++){
-            if (x[i] + velocity.x < 0 || x[i] + velocity.x  >= Main.SIZE){
+        for (int i = 0; i < pts.length; i++){
+            if (pts[i].x + velocity.x < 0 || pts[i].x + velocity.x  >= Main.SIZE){
                 velocity.x *= -1;
             }
-            if (y[i] + velocity.y < 0 || y[i] + velocity.y >= Main.SIZE){
+            if (pts[i].y + velocity.y < 0 || pts[i].y + velocity.y >= Main.SIZE){
                 velocity.y *= -1;
             }
         }
@@ -40,8 +38,8 @@ public class Polygon extends Piston {
         double angle = rot;
 
         for (int i = 0; i < sides; i++){
-            x[i] = (int) (position.x + radius*Math.cos(angle));
-            y[i] = (int) (position.y + radius*Math.sin(angle));
+            Pair temp = new Pair (position.x + radius*Math.cos(angle), position.y + radius*Math.sin(angle));
+            pts[i] = temp;
             angle += 2*Math.PI/sides;
         }
         rot += vrot;
@@ -55,11 +53,13 @@ public class Polygon extends Piston {
 
 
     public void draw(Graphics g){
-
-
         coordsUpdate();
-
-
+        int[] x = new int [pts.length];
+        int[] y = new int [pts.length];
+        for (int i = 0; i < pts.length; i++){
+            x[i] = (int)pts[i].x;
+            y[i] = (int)pts[i].y;
+        }
         g.drawPolygon(x,y,sides);
     }
 

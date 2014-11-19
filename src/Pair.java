@@ -75,7 +75,18 @@ public class Pair {
 
         return Math.atan(y/x);
     }
-
+    public double dotProduct(Pair b){
+        return this.x*b.x + this.y*b.y;
+    }
+    //THIS MUST BE A UNIT VECTOR (for optimization purposes)
+    public double getProjX (Pair projectee){
+        return this.dotProduct(projectee) * this.x;
+    }
+    public double getProjY (Pair projectee){
+        return this.dotProduct(projectee) * this.y;
+    }
+    //proj.x = ( dp / (b.x*b.x + b.y*b.y) ) * b.x;
+    //proj.y = ( dp / (b.x*b.x + b.y*b.y) ) * b.y;
     @Override
     public int hashCode(){
         return (((int)x) >> 16) | ((int)y);

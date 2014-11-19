@@ -54,6 +54,20 @@ public class Physics{
         return v;
     }
 
+    public void resolveCollisions(){
+        for (int i = 0; i < arr.size(); i++){
+            for (int j = i + 1; j < arr.size(); j++){
+                Piston a = arr.get(i);
+                Piston b = arr.get(j);
+                // for storing all of the lines we are going to project points onto
+                ArrayList <Pair> lines = new ArrayList <Pair> ();
+
+
+
+            }
+        }
+    }
+
     public void update(){
         for (int i = 0; i < arr.size(); i++){
             for (int j = i + 1; j < arr.size(); j++){
