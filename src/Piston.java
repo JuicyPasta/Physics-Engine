@@ -17,7 +17,7 @@ public abstract class Piston {
     Shape shape;
     boolean ghost;
     boolean showLine;
-    //ArrayList<Piston> others;
+
     //Physics phy;
     int id;
     public Piston (Pair position, Pair velocity, double rot, double vrot, int density){
@@ -82,4 +82,7 @@ public abstract class Piston {
                 ", vrot=" + vrot +
                 '}';
     }
+
+
+
 }

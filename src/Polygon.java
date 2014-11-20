@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created by Jackson and Kyle on 11/13/14.
@@ -10,6 +11,7 @@ public class Polygon extends Piston {
     double sideLength;
     double radius;
     Pair[] pts;
+    ArrayList<Pair> normals;
 
     public Polygon(Pair position, Pair velocity, double rot, double vrot, boolean ghost, boolean showLine, int sides, double sideLength) {
         super(position, velocity, rot, vrot, 1, ghost, showLine);
@@ -68,4 +70,15 @@ public class Polygon extends Piston {
         return 0;//replace w area formula
     }
 
+    public ArrayList<Pair> getNormals() {
+        return normals;
+    }
+
+    public void updateNormals(){
+        ArrayList <Pair> lines = new ArrayList <Pair> ();
+        for (int q = 0; q < pts.length; q ++){
+            lines.add(pts[(q+1)%pts.length].getCopy().getDifference(pts[q]).getNorm().convertUnit());
+        }
+        normals = lines;
+    }
 }

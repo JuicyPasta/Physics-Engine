@@ -54,6 +54,9 @@ public class Physics{
     }
 
     public void resolveCollisions(){
+        for (int i = 0; i < arr.size(); i++) {
+            if (arr.get(i) instanceof Polygon) ((Polygon) arr.get(i)).updateNormals();
+        }
         for (int i = 0; i < arr.size(); i++){
             Piston a = arr.get(i);
             // creates pairs parallel to the vector from polygon corners to the circle center
@@ -72,11 +75,37 @@ public class Physics{
             // creates pairs normal to the sides of polygons
             if (a instanceof Polygon){
                 Polygon pa = (Polygon)(a);
-                ArrayList <Pair> lines = new ArrayList <Pair> ();
-                for (int q = 0; q < pa.pts.length; q ++){
-                    lines.add(pa.pts[(q+1)%pa.pts.length].getCopy().getDifference(pa.pts[q]).getNorm().convertUnit());
+                ArrayList <Pair> normals = pa.getNormals();
+                Pair[] points = pa.pts;
+                for (int j = i + 1; j < arr.size(); j++){
+                    if (!(arr.get(j) instanceof Polygon)) break;
+                    Polygon b = (Polygon) arr.get(j);
+                    ArrayList<Pair> normalsOther = b.getNormals();
+                    normalsOther.addAll(normals);
+                    Pair[] pointsOther = b.pts;
+                    double length = new Pair(b.position.x-pa.position.x,b.position.y - pa.position.y).r();
+                    boolean flag = true;
+                    for (int q = 0; q < normalsOther.size(); q++){
+                        Pair normal = normalsOther.get(q);
+                        double left = 0;
+                        for (Pair pair : points){
+                            double temp = pair.getCopy().getDifference(pa.position).projOnTo(normal).r();
+                            //System.out.println(pair.projOnTo(normal).toString());
+                            if (temp > left) left = temp;
+                        }
+                        double right = 0;
+                        for (Pair pair : pointsOther){
+                            double temp = pair.getCopy().getDifference(b.position).projOnTo(normal).r();
+                            if (temp > right) right = temp;
+                        }
+                        //System.out.println("left " + left + " right " + right + " length " + length + " normal " + normal);
+                        if ( left + right < length ){
+                            flag = false;
+                        }
+
+                    }
+                    System.out.println("Collision status:" + flag);
                 }
-                //code
             }
         }
     }
