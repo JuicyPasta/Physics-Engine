@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,7 +10,6 @@ public class Physics{
     Physics(ArrayList<Piston> arr){
         this.arr = arr;
     }
-    public Physics () {}
 
     public void updateGrav (ArrayList <Piston> pistons){
         for (int i = 0; i < pistons.size(); i++)
@@ -34,6 +34,22 @@ public class Physics{
 
                     pistons.get(i).acc.basicAdd(direction);
                     pistons.get(j).acc.basicAdd(dir2);
+            }
+        }
+    }
+
+    public void drawGrav(Graphics g){
+        for (int i = 0; i < Main.SIZE; i+=10){
+            for (int j = 0; j < Main.SIZE; j+=10){
+                Pair force = new Pair(0,0);
+                for (int q = 0; q < arr.size(); q++) {
+                    Pair temp = new Pair(i-15, j-15).getDifference(arr.get(q).position);
+                    double magnitude = GRAV_CONST * arr.get(q).mass() / Math.pow(temp.r(), 2);
+                    force.basicAdd(temp.multiplyScalar(magnitude));
+                }
+                double var1 = 5*Math.cos(force.theta());
+                double var2 = 5*Math.sin(force.theta());
+                g.drawLine((int)(i - var1),(int)( j - var2),(int)(i + var1),(int)( j + var2));
             }
         }
     }

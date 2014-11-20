@@ -11,8 +11,10 @@ public class GraphicEngine extends JFrame implements Runnable {
 
     BufferStrategy bs;
     ArrayList<Piston> arr;
+    Physics physics;
 
-    public GraphicEngine(ArrayList<Piston> pistons){
+    public GraphicEngine(ArrayList<Piston> pistons, Physics physics){
+        this.physics = physics;
         this.arr = pistons;
         setSize(Main.SIZE,Main.SIZE);
         setBackground(Color.WHITE);
@@ -40,6 +42,7 @@ public class GraphicEngine extends JFrame implements Runnable {
         for (int i = 0; i < arr.size(); i++){
             arr.get(i).draw(g);
         }
+        physics.drawGrav(g);
     }
 
     @Override
