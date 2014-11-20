@@ -20,12 +20,12 @@ public class Circle extends Piston {
     }
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);
-        g.drawOval((int)(position.x),(int)(position.y),2*(int)r,2*(int)r);
+        g.drawOval((int)(position.x-r),(int)(position.y-r),2*(int)r,2*(int)r);
         if(showLine){
             Pair posCop = position.getCopy();
-            Pair velCop = velocity.getCopy().multiplyScalar(10).addScalar(r);
+            Pair velCop = velocity.getCopy().multiplyScalar(10);
             Pair end = posCop.basicAdd(velCop);
-            g.drawLine((int)(position.x+r),(int)(position.y+r),(int)end.x,(int)end.y);
+            g.drawLine((int)(position.x),(int)(position.y),(int)end.x,(int)end.y);
         }
     }
 

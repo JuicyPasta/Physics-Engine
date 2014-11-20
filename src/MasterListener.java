@@ -58,7 +58,7 @@ public class MasterListener implements KeyListener, MouseListener {
             time = System.currentTimeMillis();
             switch (state){
                 case 0:
-                    mouseStart = new Pair(e.getX(),e.getY()).subtractScalar(radius);
+                    mouseStart = new Pair(e.getX(),e.getY());
                     arr.add(new Circle(mouseStart, new Pair (0,0), 0, 0, 1, radius, true, true));
 
                     state = 1;
@@ -77,10 +77,11 @@ public class MasterListener implements KeyListener, MouseListener {
         switch (state){
             case 1:
                 Pair difference = mouseStart.getCopy();
-                difference.getDifference(new Pair(e.getX(),e.getY()).subtractScalar(radius)).divideScalar(50);
+                difference.getDifference(new Pair(e.getX(),e.getY())).divideScalar(50);
                 // I will never know why this works
                 // need to get rid of old 'ghost' circle; below is why it works
                 //arr.add(new Circle(mouseStart.getCopy(), difference, 0, 0, 1, radius,false,true));
+                arr.remove(arr.size()-1);
                 arr.add(new Circle(mouseStart, difference, 0, 0, 1, radius,false,true));
 
                 state = 0;

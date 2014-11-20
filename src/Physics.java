@@ -44,7 +44,7 @@ public class Physics{
             for (int j = 0; j < Main.SIZE; j+=10){
                 Pair force = new Pair(0,0);
                 for (int q = 0; q < arr.size(); q++) {
-                    Pair temp = new Pair(i-15, j-15).getDifference(arr.get(q).position);
+                    Pair temp = new Pair(i, j).getDifference(arr.get(q).position);
                     double magnitude = GRAV_CONST * arr.get(q).mass() / Math.pow(temp.r(), 2);
                     force.basicAdd(temp.multiplyScalar(magnitude));
                 }
@@ -99,22 +99,20 @@ public class Physics{
                     }else if (arr.get(z) instanceof Polygon){
                         Polygon p = (Polygon) arr.get(z);
                         Circle c = (Circle) a;
-                        ArrayList <Pair> normals = new ArrayList <Pair> ();
-                        for (int q = 0; q < p.pts.length; q ++){
-                            normals.add(a.position.getCopy().getDifference(p.pts[q]).convertUnit());
-                        }
+                        ArrayList <Pair> normals = p.getNormals();
                         Pair[] points = p.pts;
 
                         double length = new Pair(c.position.x-p.position.x,c.position.y - p.position.y).r();
                         for (int q = 0; q < normals.size(); q++){
                             Pair normal = normals.get(q);
 
-                            double right = 0;
+                            double left = 0;
                             for (Pair pair : points){
-                                double temp = pair.getCopy().getDifference(c.position).projOnTo(normal).r();
-                                if (temp > right) right = temp;
+                                double temp = pair.getCopy().getDifference(p.position).projOnTo(normal).r();
+                                //System.out.println(pair.projOnTo(normal).toString());
+                                if (temp > left) left = temp;
                             }
-                            if ( c.r + right < length ){
+                            if ( c.r + left < length ){
                                 flag = false;
                             }
                         }
