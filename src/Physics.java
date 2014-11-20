@@ -2,9 +2,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by Kyle on 11/13/2014.
- */
 public class Physics{
     double GRAV_CONST = 5;
     ArrayList<Piston> arr; // we wont need this
@@ -57,140 +54,30 @@ public class Physics{
     }
 
     public void resolveCollisions(){
-        // determine the lines we want to project things onto
-        Set<Pair> lines = new HashSet<Pair>();
         for (int i = 0; i < arr.size(); i++){
             Piston a = arr.get(i);
             // creates pairs parallel to the vector from polygon corners to the circle center
-            /*if (a instanceof Circle){
+            if (a instanceof Circle){
                 for (Piston p : arr){
                     if (p instanceof Polygon){
                         Polygon pa = (Polygon)(p);
+                        ArrayList <Pair> lines = new ArrayList <Pair> ();
                         for (int q = 0; q < pa.pts.length; q ++){
-                            lines.add(a.position.getCopy().getDifference(pa.pts[q]));
+                            lines.add(a.position.getCopy().getDifference(pa.pts[q]).convertUnit());
                         }
+                        //code
                     }
                 }
-            }*/
+            }
             // creates pairs normal to the sides of polygons
             if (a instanceof Polygon){
                 Polygon pa = (Polygon)(a);
+                ArrayList <Pair> lines = new ArrayList <Pair> ();
                 for (int q = 0; q < pa.pts.length; q ++){
                     lines.add(pa.pts[(q+1)%pa.pts.length].getCopy().getDifference(pa.pts[q]).getNorm().convertUnit());
                 }
+                //code
             }
         }
-
-        // Project things onto the lines and determine how far they are into eachother
-        for (Pair proj : lines) {
-            for (int i = 0; i < arr.size(); i++) {
-                for (int j = i + 1; j < arr.size(); j++) {
-                    Piston a = arr.get(i);
-                    Piston b = arr.get(j);
-
-                    handleProjection(proj, a, b);
-                }
-            }
-
-        }
-
-
-        System.out.println("---------------\nNORMALS:");
-        for (Pair pr : lines){
-            System.out.println(pr.toString());
-        }
-        System.out.println("PROJECTIONS:");
     }
-
-    // returns the intersection depth along the projection vector
-    public double handleProjection (Pair norm, Piston a, Piston b){
-        Pair mma;
-        Pair mmb;
-        if (a instanceof Circle){
-            mma = handleProjCirc (norm, (Circle)a);
-        }else{
-            mma = handleProjPoly (norm, (Polygon)a);
-        }
-        if (b instanceof Circle){
-            mmb = handleProjCirc (norm, (Circle)b);
-        }else{
-            mmb = handleProjPoly (norm, (Polygon)b);
-        }
-        // x is max, y is min
-        return Math.abs(Math.min(mma.x - mmb.y, mmb.x - mma.y));
-    }
-    // fix this, need to project a point onto the vector
-    public Pair handleProjCirc (Pair norm, Circle a){
-        Pair origin = a.position.getCopy();
-        double x = norm.getCopy().getProjX(origin);
-        System.out.println(x);
-        return new Pair (x+a.r, x-a.r);
-    }
-    public Pair handleProjPoly (Pair norm, Polygon b){
-        double min = Double.NaN;
-        double max = Double.NaN;
-
-        System.out.println("projecting: " + b.toString());
-        System.out.println("normal: " + norm.toString());
-
-        for (int i = 0; i < b.pts.length; i ++){
-            Pair pist = b.pts[(i+1)%b.pts.length].getCopy().getDifference(b.pts[i]);
-            System.out.println("\t" + pist);
-            double x = norm.getProjX(pist);
-            System.out.println("\t" + x);
-
-            if (Double.isNaN(max) || x > max){
-                max = x;
-            }
-            if (Double.isNaN(min) || x < min) {
-                min = x;
-            }
-        }
-        return new Pair (max,min);
-    }
-    public void update(){
-        for (int i = 0; i < arr.size(); i++){
-            for (int j = i + 1; j < arr.size(); j++){
-                if ((!arr.get(i).ghost && !arr.get(j).ghost) && arr.get(i) instanceof Circle && arr.get(j) instanceof Circle) {
-                    Circle a = (Circle) arr.get(i);
-                    Circle b = (Circle) arr.get(j);
-                    Pair diffPair = a.position.getCopy().getDifference(b.position);
-                    if (Math.pow(a.r+b.r,2)>= diffPair.x*diffPair.x + diffPair.y*diffPair.y){
-
-
-                        //correct formula is new v1 = (v1*(m1-m2) + 2 *m2*v2)/(m1 + m2)
-                        //its not working properly
-                        //TODO: Fix bouncing
-
-//                        Pair temp = arr.get(i).velocity.convertUnit();
-//                        double speed1 = (arr.get(i).velocity.r()*(arr.get(i).mass() - arr.get(j).mass())
-//                                + (arr.get(j).velocity.r()*(arr.get(j).mass()*2)))
-//                                /(arr.get(i).mass() + arr.get(j).mass());
-//
-//                        arr.get(i).velocity = arr.get(j).velocity.convertUnit();
-//                        double speed2 = (arr.get(j).velocity.r()*(arr.get(j).mass() - arr.get(i).mass())
-//                                + (arr.get(i).velocity.r()*(arr.get(i).mass()*2)))
-//                                /(arr.get(i).mass() + arr.get(j).mass());
-//
-//                        arr.get(j).velocity = temp;
-//                        arr.get(i).velocity.multiplyScalar(speed1);
-//                        arr.get(j).velocity.multiplyScalar(speed2);
-
-
-                        //assumes they have the same mass
-                        double tx = arr.get(i).velocity.x;
-                        double ty = arr.get(i).velocity.y;
-
-                        // *.9 is friction/ energy lost
-                        arr.get(i).velocity.x = arr.get(j).velocity.x;
-                        arr.get(i).velocity.y = arr.get(j).velocity.y;
-                        arr.get(j).velocity.x = tx;
-                        arr.get(j).velocity.y = ty;
-                    }
-                }
-            }
-        }
-        //for (int i = 0; i < arr.size(); i++) arr.get(i).update();
-    }
-
 }
