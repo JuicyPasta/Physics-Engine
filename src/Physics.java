@@ -89,12 +89,9 @@ public class Physics{
                         Circle c1 = (Circle) a;
                         Circle c2 = (Circle) arr.get(z);
                         Pair contactVect = c1.position.getCopy().getDifference(c2.position.getCopy());
-                        if (!c1.ghost && !c2.ghost && contactVect.r() < c1.r + c2.r){
-                            Pair addToC2 = c1.velocity.projOnTo(contactVect);
-                            contactVect.multiplyScalar(-1);
-                            Pair addToC1 = c2.velocity.projOnTo(contactVect);
-                            c1.velocity.basicAdd(addToC1).basicAdd(addToC2.multiplyScalar(-1)).multiplyScalar(.9);
-                            c2.velocity.basicAdd(addToC2).basicAdd(addToC1.multiplyScalar(-1)).multiplyScalar(.9);
+                        double dist = c1.r+c2.r - contactVect.r();
+                        if (!c1.ghost && !c2.ghost && dist >= 0){
+                            collide(contactVect.convertUnit(),dist,c1,c2);
                         }
 
                     }else if (arr.get(z) instanceof Polygon){
@@ -161,5 +158,21 @@ public class Physics{
                 }
             }
         }
+    }
+    double elasticity = .9;
+    public void collide (Pair normal, double depth, Piston a, Piston b){
+        Pair relativeVelocity = a.velocity.getCopy().getDifference(b.velocity);
+        double cosine = relativeVelocity.dotProduct(normal);
+        if(cosine > 0)
+            return;
+        cosine *= -elasticity;
+        double j = (-(1+elasticity) * cosine) / (1/a.mass() + 1/b.mass());
+        Pair impulse = normal.getCopy().multiplyScalar(j);
+        a.velocity = a.velocity.add(impulse.getCopy().divideScalar(a.mass()));
+        b.velocity = b.velocity.subtract(impulse.getCopy().divideScalar(b.mass()));
+        // calculate what percent of the radius half the pen depth represents
+        // multilply the percent by r and then multiply that by the normal
+        // back them out by the value you found in ^^
+
     }
 }

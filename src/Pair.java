@@ -19,6 +19,16 @@ public class Pair{
         this.y += other.y;
         return this;
     }
+    public Pair add(Pair other){
+        this.x += other.x;
+        this.y += other.y;
+        return this;
+    }
+    public Pair subtract(Pair other){
+        this.x -= other.x;
+        this.y -= other.y;
+        return this;
+    }
     public double getRad (){
         return Math.sqrt(x*x+y*y);
     }
