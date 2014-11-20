@@ -39,20 +39,20 @@ public class Physics{
     }
 
     public void drawGrav(Graphics g){
-        for (int i = 0; i < Main.SIZE; i+=10){
-            for (int j = 0; j < Main.SIZE; j+=10){
+        for (int i = 0; i < Main.SIZE; i+=4){
+            for (int j = 0; j < Main.SIZE; j+=4){
                 Pair force = new Pair(0,0);
                 for (int q = 0; q < arr.size(); q++) {
                     Pair temp = new Pair(i, j).getDifference(arr.get(q).position);
                     double magnitude = GRAV_CONST * arr.get(q).mass() / Math.pow(temp.r(), 2);
                     force.basicAdd(temp.multiplyScalar(magnitude));
                 }
-                double var1 = 5*Math.cos(force.theta());
-                double var2 = 5*Math.sin(force.theta());
+                double var1 = 2*Math.cos(force.theta());
+                double var2 = 2*Math.sin(force.theta());
                 int color = 255- (int) (force.r());
                 if (color < 0) color = 0;
                 g.setColor(new Color(color,color,color));
-                g.fillRect((int)(i - 5),(int)( j - 5),10,10);
+                g.fillRect((int)(i - 2),(int)( j - 2),4,4);
                 g.setColor(Color.BLACK);
                 g.drawLine((int)(i - var2),(int)( j - var1),(int)(i + var2),(int)( j + var1));
             }
