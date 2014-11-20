@@ -89,9 +89,9 @@ public class Pair{
 
     //THIS MUST BE A UNIT VECTOR (for optimization purposes)
     public double getProjX (Pair projectee){
-        return this.dotProduct(projectee) * this.x;
+        return this.dotProduct(projectee) * projectee.x;
     }
-    public double getProjY (Pair projectee){ return this.dotProduct(projectee) * this.y; }
+    public double getProjY (Pair projectee){ return this.dotProduct(projectee) * projectee.y; }
 
     public int hashCode(){
         return (((int)x) >> 16) | ((int)y);

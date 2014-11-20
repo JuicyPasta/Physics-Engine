@@ -29,14 +29,15 @@ public class Main {
 
         phy = new Physics();
         //Piston p = new Circle(new Pair(200,200),new Pair(0,0),0,0,1,15,false,true);
-        Piston p1 = new Circle(new Pair(200,300),new Pair(0,0),0,0,1,15,false,true);
-        Piston p3 = new Polygon(new Pair(400,300), new Pair(0,0),0,0,true,false,5,55);
+        //Piston p1 = new Circle(new Pair(200,310),new Pair(0,0),0,0,1,15,false,true);
+        Piston p3 = new Polygon(new Pair(410,300), new Pair(0,0),10,0,true,false,2,70);
         //Piston p2 = new Piston(new Pair (201,150),new Pair(.4,.1),0,1,1,new Circle(25),arr,phy);
-
+        Piston p4 = new Polygon(new Pair(400,340), new Pair(0,0),0,0,true,false,2,55);
         //arr.add(p);
-        arr.add(p1);
+        //arr.add(p1);
         arr.add(p3);
         //arr.add(p2);
+        arr.add(p4);
 
         ge = new GraphicEngine(arr);
         e = new Engine(arr);

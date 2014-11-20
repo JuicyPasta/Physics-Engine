@@ -56,14 +56,13 @@ public class Physics{
         return v;
     }
 
-    public Pair resolveCollisions(){
-
+    public void resolveCollisions(){
+        // determine the lines we want to project things onto
         Set<Pair> lines = new HashSet<Pair>();
         for (int i = 0; i < arr.size(); i++){
             Piston a = arr.get(i);
-
             // creates pairs parallel to the vector from polygon corners to the circle center
-            if (a instanceof Circle){
+            /*if (a instanceof Circle){
                 for (Piston p : arr){
                     if (p instanceof Polygon){
                         Polygon pa = (Polygon)(p);
@@ -72,21 +71,35 @@ public class Physics{
                         }
                     }
                 }
-            }
+            }*/
             // creates pairs normal to the sides of polygons
             if (a instanceof Polygon){
                 Polygon pa = (Polygon)(a);
                 for (int q = 0; q < pa.pts.length; q ++){
-                    lines.add(pa.pts[(q+1)%pa.pts.length].getCopy().getDifference(pa.pts[q]).getNorm());
+                    lines.add(pa.pts[(q+1)%pa.pts.length].getCopy().getDifference(pa.pts[q]).getNorm().convertUnit());
                 }
             }
         }
-        System.out.println("~~~~~~~");
+
+        // Project things onto the lines and determine how far they are into eachother
+        for (Pair proj : lines) {
+            for (int i = 0; i < arr.size(); i++) {
+                for (int j = i + 1; j < arr.size(); j++) {
+                    Piston a = arr.get(i);
+                    Piston b = arr.get(j);
+
+                    handleProjection(proj, a, b);
+                }
+            }
+
+        }
+
+
+        System.out.println("---------------\nNORMALS:");
         for (Pair pr : lines){
             System.out.println(pr.toString());
         }
-        return new Pair (0,0);
-
+        System.out.println("PROJECTIONS:");
     }
 
     // returns the intersection depth along the projection vector
@@ -106,20 +119,30 @@ public class Physics{
         // x is max, y is min
         return Math.abs(Math.min(mma.x - mmb.y, mmb.x - mma.y));
     }
-
+    // fix this, need to project a point onto the vector
     public Pair handleProjCirc (Pair norm, Circle a){
-        return new Pair (a.r, -a.r);
+        Pair origin = a.position.getCopy();
+        double x = norm.getCopy().getProjX(origin);
+        System.out.println(x);
+        return new Pair (x+a.r, x-a.r);
     }
     public Pair handleProjPoly (Pair norm, Polygon b){
         double min = Double.NaN;
         double max = Double.NaN;
+
+        System.out.println("projecting: " + b.toString());
+        System.out.println("normal: " + norm.toString());
+
         for (int i = 0; i < b.pts.length; i ++){
-            Pair origin = b.pts[(i+1)%b.pts.length].getCopy().getDifference(b.pts[i]).convertUnit();
-            double x = norm.getCopy().getProjX(origin);
-            if (max == Double.NaN || x > max){
+            Pair pist = b.pts[(i+1)%b.pts.length].getCopy().getDifference(b.pts[i]);
+            System.out.println("\t" + pist);
+            double x = norm.getProjX(pist);
+            System.out.println("\t" + x);
+
+            if (Double.isNaN(max) || x > max){
                 max = x;
             }
-            if (min == Double.NaN || x < min) {
+            if (Double.isNaN(min) || x < min) {
                 min = x;
             }
         }
