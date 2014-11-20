@@ -81,8 +81,9 @@ public class Physics{
             Piston a = arr.get(i);
             // creates pairs parallel to the vector from polygon corners to the circle center
             if (a instanceof Circle){
-                boolean flag = true;
                 for (int z = i + 1; z < arr.size(); z++){
+                    boolean flag = true;
+
                     if (arr.get(z) instanceof Circle) {
                         Circle c1 = (Circle) a;
                         Circle c2 = (Circle) arr.get(z);
@@ -102,31 +103,28 @@ public class Physics{
                         for (int q = 0; q < p.pts.length; q ++){
                             normals.add(a.position.getCopy().getDifference(p.pts[q]).convertUnit());
                         }
-                        normals.addAll(p.getNormals()); // all of the normals
                         Pair[] points = p.pts;
 
-                        double length = new Pair(a.position.x-p.position.x,a.position.y - p.position.y).r();
-                        boolean flag = true;
+                        double length = new Pair(c.position.x-p.position.x,c.position.y - p.position.y).r();
                         for (int q = 0; q < normals.size(); q++){
                             Pair normal = normals.get(q);
 
-                            double left = a.position.getCopy().getDifference(p.position).projOnTo(normal).r() + a.r;
-
                             double right = 0;
                             for (Pair pair : points){
-                                double temp = pair.getCopy().getDifference(a.position).projOnTo(normal).r();
+                                double temp = pair.getCopy().getDifference(c.position).projOnTo(normal).r();
                                 if (temp > right) right = temp;
                             }
-                            if ( left + right < length ){
+                            if ( c.r + right < length ){
                                 flag = false;
                             }
                         }
-                        System.out.println("Circle-Poly status: " + flag);
-
 
                     }
+                    System.out.println("Circle-Poly status: " + flag);
+
 
                 }
+
             }
             // creates pairs normal to the sides of polygons
             if (a instanceof Polygon){
