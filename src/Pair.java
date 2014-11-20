@@ -93,6 +93,15 @@ public class Pair{
     }
     public double getProjY (Pair projectee){ return this.dotProduct(projectee) * projectee.y; }
 
+    public Pair projOnTo(Pair vector){
+        return projOnTo(vector.x,vector.y);
+    }
+    public Pair projOnTo(double vectorX, double vectorY){
+        double scalar = (x*vectorX+y*vectorY)/(vectorX*vectorX+vectorY*vectorY);
+        return new Pair(vectorX*scalar,vectorY*scalar);
+
+    }
+
     public int hashCode(){
         return (((int)x) >> 16) | ((int)y);
     }
