@@ -22,17 +22,14 @@ public class Main {
     public static void main(String[] args) {
         ArrayList<Piston> arr = new ArrayList<Piston>();
 
-        HashMap<Pair,Piston> map = new HashMap<Pair, Piston>();
-        //or
-        Piston[][] arrList;
-        arrList = new Piston[SIZE][SIZE]; // cast each position to int and put it in here
+
 
         phy = new Physics(arr);
         Piston p = new Circle(new Pair(200,200),new Pair(-4,0),0,0,1,15,false,true);
         Piston p1 = new Circle(new Pair(200,310),new Pair(4,0),0,0,1,15,false,true);
         //Piston p3 = new Polygon(new Pair(410,300), new Pair(0,0),1.7,0,true,false,4,50);
         //Piston p2 = new Piston(new Pair (201,150),new Pair(.4,.1),0,1,1,new Circle(25),arr,phy);
-        Piston p4 = new Polygon(new Pair(380,340), new Pair(0,0),0,0,true,false,4,50);
+        //Piston p4 = new Polygon(new Pair(380,340), new Pair(0,0),0,0,true,false,4,50);
         arr.add(p);
         arr.add(p1);
         //arr.add(p3);

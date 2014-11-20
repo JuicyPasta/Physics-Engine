@@ -12,6 +12,7 @@ public class Physics{
     }
 
     public void updateGrav (ArrayList <Piston> pistons){
+        if (true) return;
         for (int i = 0; i < pistons.size(); i++)
             for (int j = i +1; j < pistons.size();j++) {
                 Circle a = (Circle)arr.get(i);
@@ -49,6 +50,9 @@ public class Physics{
                 }
                 double var1 = 5*Math.cos(force.theta());
                 double var2 = 5*Math.sin(force.theta());
+                int color = 255- (int) (force.r());
+                if (color < 0) color = 0;
+                g.setColor(new Color(color,color,color));
                 g.drawLine((int)(i - var1),(int)( j - var2),(int)(i + var1),(int)( j + var2));
             }
         }
@@ -77,9 +81,22 @@ public class Physics{
             Piston a = arr.get(i);
             // creates pairs parallel to the vector from polygon corners to the circle center
             if (a instanceof Circle){
-                for (Piston p : arr){
-                    if (p instanceof Polygon){
-                        Polygon pa = (Polygon)(p);
+                for (int z = i + 1; z < arr.size(); z++){
+                    if (arr.get(z) instanceof Circle) {
+                        Circle c1 = (Circle) a;
+                        Circle c2 = (Circle) arr.get(z);
+                        Pair contactVect = c1.position.getCopy().getDifference(c2.position.getCopy());
+                        if (!c1.ghost && !c2.ghost && contactVect.r() < c1.r + c2.r){
+                            Pair addToC2 = c1.velocity.projOnTo(contactVect);
+                            contactVect.multiplyScalar(-1);
+                            Pair addToC1 = c2.velocity.projOnTo(contactVect);
+                            c1.velocity.basicAdd(addToC1).basicAdd(addToC2.multiplyScalar(-1));
+                            c2.velocity.basicAdd(addToC2).basicAdd(addToC1.multiplyScalar(-1));
+                        }
+
+                    }
+                    if (arr.get(z) instanceof Polygon){
+                        Polygon pa = (Polygon)(arr.get(z));
                         ArrayList <Pair> lines = new ArrayList <Pair> ();
                         for (int q = 0; q < pa.pts.length; q ++){
                             lines.add(a.position.getCopy().getDifference(pa.pts[q]).convertUnit());
