@@ -14,7 +14,6 @@ public class Engine implements Runnable{
     }
 
     public synchronized void update(){
-        //phys.update();
         phys.resolveCollisions();
         phys.updateGrav(pistons);
         for (Piston p: pistons){

@@ -39,10 +39,12 @@ public class GraphicEngine extends JFrame implements Runnable {
         g.setColor(Color.WHITE);
         g.fillRect(0,0,Main.SIZE,Main.SIZE);
         g.setColor(Color.BLACK);
+        physics.drawGrav(g);
         for (int i = 0; i < arr.size(); i++){
             arr.get(i).draw(g);
         }
-        physics.drawGrav(g);
+
+
     }
 
     @Override

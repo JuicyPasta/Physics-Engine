@@ -12,7 +12,6 @@ public class Physics{
     }
 
     public void updateGrav (ArrayList <Piston> pistons){
-        if (true) return;
         for (int i = 0; i < pistons.size(); i++)
             for (int j = i +1; j < pistons.size();j++) {
                 Circle a = (Circle)arr.get(i);
@@ -53,7 +52,9 @@ public class Physics{
                 int color = 255- (int) (force.r());
                 if (color < 0) color = 0;
                 g.setColor(new Color(color,color,color));
-                g.drawLine((int)(i - var1),(int)( j - var2),(int)(i + var1),(int)( j + var2));
+                g.fillRect((int)(i - 5),(int)( j - 5),10,10);
+                g.setColor(Color.BLACK);
+                g.drawLine((int)(i - var2),(int)( j - var1),(int)(i + var2),(int)( j + var1));
             }
         }
     }
@@ -92,8 +93,8 @@ public class Physics{
                             Pair addToC2 = c1.velocity.projOnTo(contactVect);
                             contactVect.multiplyScalar(-1);
                             Pair addToC1 = c2.velocity.projOnTo(contactVect);
-                            c1.velocity.basicAdd(addToC1).basicAdd(addToC2.multiplyScalar(-1));
-                            c2.velocity.basicAdd(addToC2).basicAdd(addToC1.multiplyScalar(-1));
+                            c1.velocity.basicAdd(addToC1).basicAdd(addToC2.multiplyScalar(-1)).multiplyScalar(.9);
+                            c2.velocity.basicAdd(addToC2).basicAdd(addToC1.multiplyScalar(-1)).multiplyScalar(.9);
                         }
 
                     }else if (arr.get(z) instanceof Polygon){
@@ -118,7 +119,7 @@ public class Physics{
                         }
 
                     }
-                    System.out.println("Circle-Poly status: " + flag);
+                    //System.out.println("Circle-Poly status: " + flag);
 
 
                 }
@@ -156,7 +157,7 @@ public class Physics{
                         }
 
                     }
-                    System.out.println("Collision status:" + flag);
+                    //System.out.println("Collision status:" + flag);
                 }
             }
         }
