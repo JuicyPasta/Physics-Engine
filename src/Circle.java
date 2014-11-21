@@ -36,10 +36,10 @@ public class Circle extends Piston {
     }
 
     public void update(){
-        if (position.x + velocity.x < 0 || position.x + velocity.x + 2 * lengthToEdge(0) >= Main.SIZE){
+        if ( position.x + velocity.x - r < 0 || position.x + velocity.x + 2 * lengthToEdge(0) >= Main.SIZE){
             velocity.x *= -1;
         }
-        if (position.y + velocity.y < 0 || position.y + velocity.y + 2 * lengthToEdge(3 * Math.PI / 2) >= Main.SIZE){
+        if (position.y + velocity.y - r < 0 || position.y + velocity.y + 2 * lengthToEdge(3 * Math.PI / 2) >= Main.SIZE){
             velocity.y *= -1;
         }
 

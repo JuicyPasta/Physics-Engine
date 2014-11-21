@@ -13,7 +13,13 @@ class SafeArrayList<E> extends ArrayList<E> {
 
     @Override
     public synchronized E get(int index){
-        return super.get(index);
+
+       try {
+           return super.get(index);
+       } catch (Exception e){
+           e.printStackTrace();
+       }
+       return null;
     }
 
     @Override
