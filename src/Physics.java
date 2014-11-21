@@ -186,6 +186,8 @@ public class Physics{
         Pair impulse = normal.getCopy().multiplyScalar(j);
         a.velocity = a.velocity.add(impulse.getCopy().divideScalar(a.mass()));
         b.velocity = b.velocity.subtract(impulse.getCopy().divideScalar(b.mass()));
+
+
         // calculate what percent of the radius half the pen depth represents
         // multilply the percent by r and then multiply that by the normal
         // back them out by the value you found in ^^

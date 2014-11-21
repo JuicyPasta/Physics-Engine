@@ -8,14 +8,18 @@ import java.util.*;
 public class Engine implements Runnable{
     ArrayList <Piston> pistons;
     Physics phys;
+    boolean gravityOn;
     public Engine(ArrayList<Piston> pistons){
         this.pistons = pistons;
         this.phys = new Physics(pistons);
+        gravityOn = false;
     }
 
     public synchronized void update(){
         phys.resolveCollisions();
-        //phys.updateGrav(pistons);
+        if (gravityOn) {
+            phys.updateGrav(pistons);
+        }
         for (Piston p: pistons){
             p.update();
         }

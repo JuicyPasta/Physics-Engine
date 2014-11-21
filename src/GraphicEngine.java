@@ -12,7 +12,7 @@ public class GraphicEngine extends JFrame implements Runnable {
     BufferStrategy bs;
     ArrayList<Piston> arr;
     Physics physics;
-
+    boolean graphicLinesOn;
     public GraphicEngine(ArrayList<Piston> pistons, Physics physics){
         this.physics = physics;
         this.arr = pistons;
@@ -23,6 +23,7 @@ public class GraphicEngine extends JFrame implements Runnable {
         setVisible(true);
         createBufferStrategy(2);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        graphicLinesOn = false;
     }
 
     public void paintUpdate(){
@@ -39,7 +40,9 @@ public class GraphicEngine extends JFrame implements Runnable {
         g.setColor(Color.WHITE);
         g.fillRect(0,0,Main.SIZE,Main.SIZE);
         g.setColor(Color.BLACK);
-        physics.drawGrav(g);
+        if (graphicLinesOn) {
+            physics.drawGrav(g);
+        }
         for (int i = 0; i < arr.size(); i++){
             arr.get(i).draw(g);
         }

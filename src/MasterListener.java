@@ -22,7 +22,18 @@ public class MasterListener implements KeyListener, MouseListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+        // toggle gravity lines
+        if (e.getKeyChar() == '1'){
+            this.g.graphicLinesOn = !this.g.graphicLinesOn;
+        }
+        // toggle gravity
+        if (e.getKeyChar() == '2'){
+            this.e.gravityOn = !this.e.gravityOn;
+        }
+        // toggles velocity lines
+        if (e.getKeyChar() == '3'){
 
+        }
     }
 
     @Override
@@ -87,9 +98,6 @@ public class MasterListener implements KeyListener, MouseListener {
                 state = 0;
                 break;
         }
-
-
-
     }
 
     @Override

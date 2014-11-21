@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,8 +41,13 @@ public class Main {
 
         ge = new GraphicEngine(arr,phy);
         e = new Engine(arr);
+
+        // this seems jank, fix later
         MouseListener mouseListener = new MasterListener(e,ge,arr,phy);
+        KeyListener keyListener = new MasterListener(e,ge,arr,phy);
+
         ge.addMouseListener(mouseListener);
+        ge.addKeyListener(keyListener);
         Thread t1 = new Thread(ge);
         Thread t2 = new Thread(e);
         t1.start();
