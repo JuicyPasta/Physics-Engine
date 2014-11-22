@@ -187,6 +187,10 @@ public class Physics{
         a.velocity = a.velocity.add(impulse.getCopy().divideScalar(a.mass()));
         b.velocity = b.velocity.subtract(impulse.getCopy().divideScalar(b.mass()));
 
+        double ratioA = a.mass()/(a.mass()+b.mass());
+        double ratioB = b.mass()/(a.mass()+b.mass());
+        a.position = a.position.subtract(normal.getCopy().multiplyScalar(ratioA*depth));
+        b.position = b.position.add(normal.getCopy().multiplyScalar(ratioB*depth));
 
         // calculate what percent of the radius half the pen depth represents
         // multilply the percent by r and then multiply that by the normal
