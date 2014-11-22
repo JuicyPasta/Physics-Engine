@@ -33,7 +33,7 @@ public class Main {
         //Piston p2 = new Piston(new Pair (201,150),new Pair(.4,.1),0,1,1,new Circle(25),arr,phy);
         Piston p4 = new Polygon(new Pair(380,340), new Pair(0,0),0,0,true,false,4,50);
         arr.add(p);
-        //arr.add(p1);
+        arr.add(p1);
         //arr.add(p3);
         //arr.add(p2);
         //arr.add(p4);
@@ -41,6 +41,7 @@ public class Main {
 
         ge = new GraphicEngine(arr,phy);
         e = new Engine(arr);
+        phy.refreshCouples(arr);
 
         // this seems jank, fix later
         MouseListener mouseListener = new MasterListener(e,ge,arr,phy);

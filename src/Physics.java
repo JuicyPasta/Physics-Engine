@@ -5,36 +5,47 @@ import java.util.Set;
 
 public class Physics{
     double GRAV_CONST = 1;
-    ArrayList<Piston> arr; // we wont need this
-
+    ArrayList<Piston> arr;
+    ArrayList <Couple> couples;
     Physics(ArrayList<Piston> arr){
         this.arr = arr;
+        this.couples = new ArrayList<Couple> ();
+    }
+    public void refreshCouples (ArrayList <Piston> others){
+        if (others.size() > 1){
+            couples.clear();
+            for (int i = 0; i < others.size(); i ++){
+                for (int j = i+1; j < others.size(); j++){
+                    if (i != j) {
+                        couples.add(new Couple(others.get(i), others.get(j)));
+                    }
+                }
+            }
+        }
     }
 
-    public void updateGrav (ArrayList <Piston> pistons){
-        for (int i = 0; i < pistons.size(); i++)
-            for (int j = i +1; j < pistons.size();j++) {
-                Circle a = (Circle)arr.get(i);
-                Circle b = (Circle)arr.get(j);
-                if ((!a.ghost && !b.ghost) && !(Math.sqrt(Math.pow(a.position.x - b.position.x, 2)
-                        + Math.pow(arr.get(i).position.y - arr.get(j).position.y, 2)) <= a.r + b.r)) {
-                    double distance = distance(pistons.get(i), pistons.get(j));
+    public void updateGrav (){
+        for (Couple coup : couples) {
+            Circle a = (Circle) coup.a;
+            Circle b = (Circle) coup.b;
+            if ((!a.ghost && !b.ghost) && !(Math.sqrt(Math.pow(a.position.x - b.position.x, 2)
+                    + Math.pow(a.position.y - b.position.y, 2)) <= a.r + b.r)) {
 
-                    double force = GRAV_CONST * pistons.get(i).mass() * pistons.get(j).mass() / (distance * distance);
-                    // Makes a pair that points toward the other piston
-                    Pair direction = new Pair(pistons.get(j).position.x - pistons.get(i).position.x, pistons.get(j).position.y
-                            - pistons.get(i).position.y);
-                    // Converts the pair into a unit pair
-                    direction.convertUnit();
-                    // Multiplies the unit by the force
-                    direction.multiplyScalar(force);
-                    Pair dir2 = new Pair(-direction.x, -direction.y);
-                    // Converts the force into acceleration
-                    direction.divideScalar(pistons.get(i).mass());
-                    dir2.divideScalar(pistons.get(j).mass());
+                double distance = distance(a, b);
+                double force = GRAV_CONST * a.mass() * b.mass() / (distance * distance);
+                // Makes a pair that points toward the other piston
+                Pair direction = new Pair(b.position.x - a.position.x, b.position.y - a.position.y);
+                // Converts the pair into a unit pair
+                direction.convertUnit();
+                // Multiplies the unit by the force
+                direction.multiplyScalar(force);
+                Pair dir2 = new Pair(-direction.x, -direction.y);
+                // Converts the force into acceleration
+                direction.divideScalar(a.mass());
+                dir2.divideScalar(a.mass());
 
-                    pistons.get(i).acc.basicAdd(direction);
-                    pistons.get(j).acc.basicAdd(dir2);
+                a.acc.basicAdd(direction);
+                b.acc.basicAdd(dir2);
             }
         }
     }
@@ -55,7 +66,9 @@ public class Physics{
                 g.setColor(new Color(color,color,color));
                 g.fillRect((int)(i - 5),(int)( j - 5),10,10);
                 g.setColor(Color.BLACK);
-                g.drawLine((int)(i - var2),(int)( j + var1),(int)(i + var2),(int)( j - var1));
+
+//                g.drawLine((int)(i - var2),(int)( j + var1),(int)(i + var2),(int)( j - var1));
+                g.drawLine((int)(i + var2),(int)( j - var1),(int)(i - var2),(int)( j + var1));
             }
         }
     }

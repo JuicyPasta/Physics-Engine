@@ -14,12 +14,18 @@ public class Engine implements Runnable{
         this.phys = new Physics(pistons);
         gravityOn = false;
     }
-
+    public synchronized void refreshCouples (){ //refreshes physics refreshCouples
+        phys.refreshCouples(pistons);
+    }
     public synchronized void update(){
+
         phys.resolveCollisions();
         if (gravityOn) {
-            phys.updateGrav(pistons);
+            //phys.refreshCouples(pistons);//THIS NEEDS TO BE FIXED
+
+            phys.updateGrav();
         }
+
         for (Piston p: pistons){
             p.update();
         }

@@ -70,8 +70,12 @@ public class MasterListener implements KeyListener, MouseListener {
             switch (state){
                 case 0:
                     mouseStart = new Pair(e.getX(),e.getY());
-                    arr.add(new Circle(mouseStart, new Pair (0,0), 0, 0, 1, radius, true, true));
-
+                    if (e.getButton() == MouseEvent.BUTTON1) {
+                        arr.add(new Circle(mouseStart, new Pair (0,0), 0, 0, 1, radius, true, true));
+                    }
+                    if (e.getButton() == MouseEvent.BUTTON3){
+                        arr.add(new Circle(mouseStart, new Pair (0,0), 0, 0, 1, radius*2, true, true));
+                    }
                     state = 1;
                     break;
 
@@ -80,22 +84,22 @@ public class MasterListener implements KeyListener, MouseListener {
 
     }
 
-
-
-
     @Override
     public void mouseReleased(MouseEvent e) {
         switch (state){
             case 1:
                 Pair difference = mouseStart.getCopy();
                 difference.getDifference(new Pair(e.getX(),e.getY())).divideScalar(50);
-                // I will never know why this works
-                // need to get rid of old 'ghost' circle; below is why it works
-                //arr.add(new Circle(mouseStart.getCopy(), difference, 0, 0, 1, radius,false,true));
-                arr.remove(arr.size()-1);
-                arr.add(new Circle(mouseStart, difference, 0, 0, 1, radius,false,true));
 
+                arr.remove(arr.size()-1);
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    arr.add(new Circle(mouseStart, difference, 0, 0, 1, radius, false, true));
+                }
+                if (e.getButton() == MouseEvent.BUTTON3){
+                    arr.add(new Circle(mouseStart, difference, 0, 0, 1, radius*2, false, true));
+                }
                 state = 0;
+                this.e.refreshCouples();
                 break;
         }
     }
