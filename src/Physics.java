@@ -29,7 +29,7 @@ public class Physics{
             Circle a = (Circle) coup.a;
             Circle b = (Circle) coup.b;
             if ((!a.ghost && !b.ghost) && !(Math.sqrt(Math.pow(a.position.x - b.position.x, 2)
-                    + Math.pow(a.position.y - b.position.y, 2)) <= a.r + b.r)) {
+                    + Math.pow(a.position.y - b.position.y, 2))-2 <= a.r + b.r)) {
 
                 double distance = distance(a, b);
                 double force = GRAV_CONST * a.mass() * b.mass() / (distance * distance);

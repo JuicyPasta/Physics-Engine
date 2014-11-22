@@ -24,6 +24,8 @@ public class Circle extends Piston {
         g.setColor(Color.WHITE);
         g.fillOval((int)(position.x-r+1),(int)(position.y-r+1),2*(int)r-1,2*(int)r-1);
         if(showLine){
+            g.setColor(Color.BLACK);
+
             Pair posCop = position.getCopy();
             Pair velCop = velocity.getCopy().multiplyScalar(10);
             Pair end = posCop.basicAdd(velCop);

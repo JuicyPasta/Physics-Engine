@@ -48,21 +48,14 @@ public abstract class Piston {
     }
 
     public void update(){
-        //Pair gravAcc = phy.getGrav(this,others);
-        //System.out.println(id + " " + gravAcc);
-        //addPair(velocity, gravAcc); // thread safe
-
         addPair(velocity, acc); // thread safe
         acc.multiplyScalar(0);
         addPair(position, velocity); // thread safe
-
     }
 
     public abstract double mass();
 
     public abstract void draw(Graphics g);
-
-
 
     public void switchGhost(){
         ghost = !ghost;

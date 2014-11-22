@@ -34,6 +34,17 @@ public class MasterListener implements KeyListener, MouseListener {
         if (e.getKeyChar() == '3'){
 
         }
+        if (e.getKeyChar() == 's'){
+            for (Piston p : arr){
+                p.velocity.x = 0;
+                p.velocity.y = 0;
+            }
+        }
+        if (e.getKeyChar() == 'l'){
+            for (Piston p : arr){
+                p.showLine=!p.showLine;
+            }
+        }
     }
 
     @Override

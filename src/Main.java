@@ -32,8 +32,8 @@ public class Main {
         //Piston p3 = new Polygon(new Pair(410,300), new Pair(0,0),1.7,0,true,false,4,50);
         //Piston p2 = new Piston(new Pair (201,150),new Pair(.4,.1),0,1,1,new Circle(25),arr,phy);
         Piston p4 = new Polygon(new Pair(380,340), new Pair(0,0),0,0,true,false,4,50);
-        arr.add(p);
-        arr.add(p1);
+        //arr.add(p);
+        //arr.add(p1);
         //arr.add(p3);
         //arr.add(p2);
         //arr.add(p4);
