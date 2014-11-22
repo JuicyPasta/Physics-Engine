@@ -88,85 +88,79 @@ public class Physics{
         return v;
     }
 
-    public void resolveCollisions() {
+    public void resolveCollisions(){
         for (int i = 0; i < arr.size(); i++) {
             if (arr.get(i) instanceof Polygon) ((Polygon) arr.get(i)).updateNormals();
         }
-        for (int i = 0; i < arr.size(); i++) {
-            Piston a = arr.get(i);
-            // creates pairs parallel to the vector from polygon corners to the circle center
-            if (a instanceof Circle) {
-                for (int z = i + 1; z < arr.size(); z++) {
-                    boolean flag = true;
+        for (Couple coup : couples){
+            Piston pista = coup.a;
+            Piston pistb = coup.b;
 
-                    if (arr.get(z) instanceof Circle) {
-                        Circle c1 = (Circle) a;
-                        Circle c2 = (Circle) arr.get(z);
-                        Pair contactVect = c1.position.getCopy().getDifference(c2.position.getCopy());
-
-                        double dist = c1.r+c2.r - contactVect.r();
-                        if (!c1.ghost && !c2.ghost && dist >= 0){
-                            collide(contactVect.convertUnit(),dist,c1,c2);
-                        }
-
-                        } else if (arr.get(z) instanceof Polygon) {
-                            Polygon p = (Polygon) arr.get(z);
-                            Circle c = (Circle) a;
-                            ArrayList<Pair> normals = p.getNormals();
-                            Pair[] points = p.pts;
-
-                            double length = new Pair(c.position.x - p.position.x, c.position.y - p.position.y).r();
-                            for (int q = 0; q < normals.size(); q++) {
-                                Pair normal = normals.get(q);
-
-                                double left = 0;
-                                for (Pair pair : points) {
-                                    double temp = pair.getCopy().getDifference(p.position).projOnTo(normal).r();
-                                    //System.out.println(pair.projOnTo(normal).toString());
-                                    if (temp > left) left = temp;
-                                }
-                                if (c.r + left < length) {
-                                    flag = false;
-                                }
-                            }
-                        }
-                    }
+            // CIRCLE - CIRCLE
+            if (pista instanceof Circle && pistb instanceof Circle){
+                Circle a = (Circle) pista;
+                Circle b = (Circle) pistb;
+                Pair contactVect = a.position.getCopy().getDifference(b.position.getCopy());
+                double dist = a.r+b.r - contactVect.r();
+                if (!a.ghost && !b.ghost && dist >= 0){
+                    collide(contactVect.convertUnit(),dist,a,b);
                 }
-                // creates pairs normal to the sides of polygons
-                if (a instanceof Polygon) {
-                    Polygon pa = (Polygon) (a);
-                    ArrayList<Pair> normals = pa.getNormals();
-                    Pair[] points = pa.pts;
-                    for (int j = i + 1; j < arr.size(); j++) {
-                        if (!(arr.get(j) instanceof Polygon)) break;
-                        Polygon b = (Polygon) arr.get(j);
-                        ArrayList<Pair> normalsOther = b.getNormals();
-                        normalsOther.addAll(normals);
-                        Pair[] pointsOther = b.pts;
-                        double length = new Pair(b.position.x - pa.position.x, b.position.y - pa.position.y).r();
-                        boolean flag = true;
-                        for (int q = 0; q < normalsOther.size(); q++) {
-                            Pair normal = normalsOther.get(q);
-                            double left = 0;
-                            for (Pair pair : points) {
-                                double temp = pair.getCopy().getDifference(pa.position).projOnTo(normal).r();
-                                if (temp > left) left = temp;
-                            }
-                            double right = 0;
-                            for (Pair pair : pointsOther) {
-                                double temp = pair.getCopy().getDifference(b.position).projOnTo(normal).r();
-                                if (temp > right) right = temp;
-                            }
-                            if (left + right < length) {
-                                flag = false;
-                            }
+            }
+            // CIRCLE - POLYGON
+            if (pista instanceof Circle && pistb instanceof Polygon){
+                Circle a = (Circle) pista;
+                Polygon b = (Polygon) pistb;
 
-                        }
-                        //System.out.println("Collision status:" + flag);
+                ArrayList<Pair> normals = b.getNormals();
+                Pair[] points = b.pts;
+
+                double length = new Pair(a.position.x - b.position.x, a.position.y - b.position.y).r();
+                for (int q = 0; q < normals.size(); q++) {
+                    Pair normal = normals.get(q);
+
+                    double left = 0;
+                    for (Pair pair : points) {
+                        double temp = pair.getCopy().getDifference(b.position).projOnTo(normal).r();
+                        if (temp > left) left = temp;
+                    }
+                    if (a.r + left > length) {
+                        // method for collision goes here
                     }
                 }
             }
+            // POLYGON - POLYGON
+            if (pista instanceof Polygon && pistb instanceof Polygon){
+                Polygon a = (Polygon) pista;
+                Polygon b = (Polygon) pistb;
+
+                ArrayList<Pair> normals = a.getNormals();
+                normals.addAll(b.getNormals());
+
+                Pair[] points = a.pts;
+                Pair[] pointsOther = b.pts;
+                double length = new Pair(b.position.x - a.position.x, b.position.y - a.position.y).r();
+                boolean flag = true;
+                for (int q = 0; q < normals.size(); q++) {
+                    Pair normal = normals.get(q);
+                    double left = 0;
+                    for (Pair pair : points) {
+                        double temp = pair.getCopy().getDifference(a.position).projOnTo(normal).r();
+                        if (temp > left) left = temp;
+                    }
+                    double right = 0;
+                    for (Pair pair : pointsOther) {
+                        double temp = pair.getCopy().getDifference(b.position).projOnTo(normal).r();
+                        if (temp > right) right = temp;
+                    }
+                    if (left + right > length) {
+                        // method for collision goes here
+                    }
+
+                }
+            }
+
         }
+    }
 
     double elasticity = .9;
     public void collide (Pair normal, double depth, Piston a, Piston b){
