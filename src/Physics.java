@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Physics{
-    double GRAV_CONST = 5;
+    double GRAV_CONST = 1;
     ArrayList<Piston> arr; // we wont need this
 
     Physics(ArrayList<Piston> arr){
@@ -90,20 +90,7 @@ public class Physics{
                         Circle c1 = (Circle) a;
                         Circle c2 = (Circle) arr.get(z);
                         Pair contactVect = c1.position.getCopy().getDifference(c2.position.getCopy());
-//
-//                        if (!c1.ghost && !c2.ghost && contactVect.r() <= c1.r + c2.r) {
-//                            Pair addToC2 = c1.velocity.projOnTo(contactVect);
-//                            contactVect.multiplyScalar(-1);
-//                            Pair addToC1 = c2.velocity.projOnTo(contactVect);
-////                            if (contactVect.r() < c1.r+c2.r){
-//                                double ratio = addToC1.r()/ (addToC1.r() + addToC2.r());
-//                                double depth = contactVect.r() - (c1.r+c2.r);
-//                                System.out.println("ratio:" + ratio + "; depth: " + depth);
-//                                c1.position.basicAdd(contactVect.convertUnit().multiplyScalar(-depth*ratio));
-//                                c2.position.basicAdd(contactVect.convertUnit().multiplyScalar(depth*(1-ratio)));
-//                            }
-//                            c1.velocity.basicAdd(addToC1).basicAdd(addToC2.multiplyScalar(-1)).multiplyScalar(.9);
-//                            c2.velocity.basicAdd(addToC2).basicAdd(addToC1.multiplyScalar(-1)).multiplyScalar(.9);
+
                         double dist = c1.r+c2.r - contactVect.r();
                         if (!c1.ghost && !c2.ghost && dist >= 0){
                             collide(contactVect.convertUnit(),dist,c1,c2);
@@ -129,13 +116,8 @@ public class Physics{
                                     flag = false;
                                 }
                             }
-
                         }
-                        //System.out.println("Circle-Poly status: " + flag);
-
-
                     }
-
                 }
                 // creates pairs normal to the sides of polygons
                 if (a instanceof Polygon) {
@@ -155,7 +137,6 @@ public class Physics{
                             double left = 0;
                             for (Pair pair : points) {
                                 double temp = pair.getCopy().getDifference(pa.position).projOnTo(normal).r();
-                                //System.out.println(pair.projOnTo(normal).toString());
                                 if (temp > left) left = temp;
                             }
                             double right = 0;
@@ -163,7 +144,6 @@ public class Physics{
                                 double temp = pair.getCopy().getDifference(b.position).projOnTo(normal).r();
                                 if (temp > right) right = temp;
                             }
-                            //System.out.println("left " + left + " right " + right + " length " + length + " normal " + normal);
                             if (left + right < length) {
                                 flag = false;
                             }
@@ -177,6 +157,11 @@ public class Physics{
 
     double elasticity = .9;
     public void collide (Pair normal, double depth, Piston a, Piston b){
+        double ratioA = a.mass()/(a.mass()+b.mass());
+        double ratioB = b.mass()/(a.mass()+b.mass());
+        a.position = a.position.subtract(normal.getCopy().multiplyScalar(ratioA*depth));
+        b.position = b.position.add(normal.getCopy().multiplyScalar(ratioB*depth));
+
         Pair relativeVelocity = a.velocity.getCopy().getDifference(b.velocity);
         double cosine = relativeVelocity.dotProduct(normal);
         if(cosine > 0)
@@ -186,15 +171,5 @@ public class Physics{
         Pair impulse = normal.getCopy().multiplyScalar(j);
         a.velocity = a.velocity.add(impulse.getCopy().divideScalar(a.mass()));
         b.velocity = b.velocity.subtract(impulse.getCopy().divideScalar(b.mass()));
-
-        double ratioA = a.mass()/(a.mass()+b.mass());
-        double ratioB = b.mass()/(a.mass()+b.mass());
-        a.position = a.position.subtract(normal.getCopy().multiplyScalar(ratioA*depth));
-        b.position = b.position.add(normal.getCopy().multiplyScalar(ratioB*depth));
-
-        // calculate what percent of the radius half the pen depth represents
-        // multilply the percent by r and then multiply that by the normal
-        // back them out by the value you found in ^^
-
     }
 }
