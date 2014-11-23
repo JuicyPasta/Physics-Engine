@@ -126,8 +126,8 @@ public class Physics{
                 Pair finNormal = null;
                 for (int q = 0; q < normals.size(); q++) {
                     Pair normal = normals.get(q);
+                    //System.out.println(normal);
                     // checks to see if the circle is moving towards normal
-                    if (a.velocity.dotProduct(normal) <= 0) {
                         double circPt = a.position.getCopy().projOnTo(normal).r();
                         double min = Double.MAX_VALUE;
                         double max = Double.MIN_VALUE;
@@ -147,12 +147,12 @@ public class Physics{
                             finNormal = null;
                             break;
                         }
-                        if (penDepth > 0 && penDepth < minPen) {
+                        if (penDepth > 0 && penDepth < minPen && a.velocity.dotProduct(normal) >= 0) {
                             minPen = penDepth;
                             finNormal = normal;
                         }
 
-                    }
+
 
                 }
 
