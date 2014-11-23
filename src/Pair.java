@@ -101,7 +101,9 @@ public class Pair{
     public double getProjX (Pair projectee){
         return this.dotProduct(projectee) * projectee.x;
     }
-    public double getProjY (Pair projectee){ return this.dotProduct(projectee) * projectee.y; }
+    public double getProjY (Pair projectee){
+        return this.dotProduct(projectee) * projectee.y;
+    }
 
     public Pair projOnTo(Pair vector){
         return projOnTo(vector.x,vector.y);

@@ -45,6 +45,12 @@ public class MasterListener implements KeyListener, MouseListener {
                 p.showLine=!p.showLine;
             }
         }
+        if (e.getKeyChar() == 'c'){
+            for (int i = arr.size()-1; i >= 0; i --){
+                if (arr.get(i) instanceof Circle)
+                    arr.remove(i);
+            }
+        }
     }
 
     @Override
@@ -85,11 +91,10 @@ public class MasterListener implements KeyListener, MouseListener {
                         arr.add(new Circle(mouseStart, new Pair (0,0), 0, 0, 1, radius, true, true));
                     }
                     if (e.getButton() == MouseEvent.BUTTON3){
-                        arr.add(new Circle(mouseStart, new Pair (0,0), 0, 0, 1, radius*2, true, true));
+                        arr.add(new Circle(mouseStart, new Pair (0,0), 0, 0, 1, radius, true, true));
                     }
                     state = 1;
                     break;
-
             }
         }
 
@@ -107,7 +112,7 @@ public class MasterListener implements KeyListener, MouseListener {
                     arr.add(new Circle(mouseStart, difference, 0, 0, 1, radius, false, true));
                 }
                 if (e.getButton() == MouseEvent.BUTTON3){
-                    arr.add(new Circle(mouseStart, difference, 0, 0, 1, radius*2, false, true));
+                    arr.add(new Circle(mouseStart, difference, 0, 0, 1, radius*3, false, true));
                 }
                 state = 0;
                 this.e.refreshCouples();

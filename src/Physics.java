@@ -106,6 +106,12 @@ public class Physics{
                     collide(contactVect.convertUnit(),dist,a,b);
                 }
             }
+            // POLYGON - CIRCLE --> CIRCLE - POLYGON
+            if (pista instanceof Polygon && pistb instanceof Circle){
+                Piston copy = pista;
+                pista = pistb;
+                pistb = copy;
+            }
             // CIRCLE - POLYGON
             if (pista instanceof Circle && pistb instanceof Polygon){
                 Circle a = (Circle) pista;
@@ -114,19 +120,45 @@ public class Physics{
                 ArrayList<Pair> normals = b.getNormals();
                 Pair[] points = b.pts;
 
-                double length = new Pair(a.position.x - b.position.x, a.position.y - b.position.y).r();
+
+                // Find the axis of least penetration
+                double minPen = Double.MAX_VALUE;
+                Pair finNormal = null;
                 for (int q = 0; q < normals.size(); q++) {
                     Pair normal = normals.get(q);
+                    // checks to see if the circle is moving towards normal
+                    if (a.velocity.dotProduct(normal) < 0) {
+                        double circPt = a.position.getCopy().projOnTo(normal).r();
+                        double min = Double.MAX_VALUE;
+                        double max = Double.MIN_VALUE;
+                        double cmin = circPt - a.r;
+                        double cmax = circPt + a.r;
 
-                    double left = 0;
-                    for (Pair pair : points) {
-                        double temp = pair.getCopy().getDifference(b.position).projOnTo(normal).r();
-                        if (temp > left) left = temp;
+                        for (Pair pair : points) {
+
+                            double projection = pair.getCopy().projOnTo(normal).r();
+                            if (projection > max) max = projection;
+                            if (projection < min) min = projection;
+
+                        }
+
+                        double penDepth = (Math.min(max - cmin, cmax - min));
+                        if (penDepth > 0 && penDepth < minPen) {
+                            minPen = penDepth;
+                            finNormal = normal;
+                        }
+                        if (penDepth < 0){
+                            break;
+                        }
                     }
-                    if (a.r + left > length) {
-                        // method for collision goes here
-                    }
+
                 }
+                if (finNormal != null) {
+                    System.out.println(finNormal.toString());
+                    System.out.println(minPen);
+                }
+                //Collision handling goes here
+
             }
             // POLYGON - POLYGON
             if (pista instanceof Polygon && pistb instanceof Polygon){
@@ -164,8 +196,8 @@ public class Physics{
 
     double elasticity = .9;
     public void collide (Pair normal, double depth, Piston a, Piston b){
-        double ratioA = a.mass()/(a.mass()+b.mass());
-        double ratioB = b.mass()/(a.mass()+b.mass());
+        double ratioB = a.mass()/(a.mass()+b.mass());
+        double ratioA = b.mass()/(a.mass()+b.mass());
         a.position = a.position.subtract(normal.getCopy().multiplyScalar(ratioA*depth));
         b.position = b.position.add(normal.getCopy().multiplyScalar(ratioB*depth));
 
