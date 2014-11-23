@@ -129,8 +129,6 @@ public class Physics{
 
                 for (int q = 0; q < normals.size(); q++) {
                     Pair normal = normals.get(q);
-                    //System.out.println(normal);
-                    // checks to see if the circle is moving towards normal
                         double circPt = a.position.getCopy().projOnTo(normal).r();
                         double min = Double.MAX_VALUE;
                         double max = Double.MIN_VALUE;
@@ -150,21 +148,15 @@ public class Physics{
                             finNormal = null;
                             break;
                         }
-                        if (penDepth > 0 && penDepth < minPen && a.velocity.dotProduct(normal) >= 0) {
+                        if (penDepth > 0 && penDepth < minPen && a.position.getCopy().getDifference(b.position).dotProduct(normal) >= 0) {
                             minPen = penDepth;
                             finNormal = normal;
                         }
-
-
-
                 }
 
                 if (finNormal != null) {
                     collide(finNormal, minPen, a, b);
-                    //System.out.println(finNormal.toString());
-                    //System.out.println(minPen);
                 }
-                //Collision handling goes here
 
             }
             // POLYGON - POLYGON
@@ -174,27 +166,49 @@ public class Physics{
 
                 ArrayList<Pair> normals = a.getNormals();
                 normals.addAll(b.getNormals());
+                Pair[] apoints = a.pts;
+                Pair[] bpoints = b.pts;
 
-                Pair[] points = a.pts;
-                Pair[] pointsOther = b.pts;
-                double length = new Pair(b.position.x - a.position.x, b.position.y - a.position.y).r();
-                boolean flag = true;
+                for (int q = 0; q < b.pts.length; q ++){
+                    normals.add(a.position.getCopy().getDifference(b.pts[q]).convertUnit());
+                }
+                // Find the axis of least penetration
+                double minPen = Double.MAX_VALUE;
+                Pair finNormal = null;
+
                 for (int q = 0; q < normals.size(); q++) {
                     Pair normal = normals.get(q);
-                    double left = 0;
-                    for (Pair pair : points) {
-                        double temp = pair.getCopy().getDifference(a.position).projOnTo(normal).r();
-                        if (temp > left) left = temp;
-                    }
-                    double right = 0;
-                    for (Pair pair : pointsOther) {
-                        double temp = pair.getCopy().getDifference(b.position).projOnTo(normal).r();
-                        if (temp > right) right = temp;
-                    }
-                    if (left + right > length) {
-                        // method for collision goes here
-                    }
+                    double amin = Double.MAX_VALUE;
+                    double amax = Double.MIN_VALUE;
+                    double bmin = Double.MAX_VALUE;
+                    double bmax = Double.MIN_VALUE;
 
+                    for (Pair pair : apoints) {
+                        double projection = pair.getCopy().projOnTo(normal).r();
+                        if (projection > amax) amax = projection;
+                        if (projection < amin) amin = projection;
+
+                    }
+                    for (Pair pair : bpoints) {
+                        double projection = pair.getCopy().projOnTo(normal).r();
+                        if (projection > bmax) bmax = projection;
+                        if (projection < bmin) bmin = projection;
+
+                    }
+                    double penDepth = (Math.min(amax - bmin, bmax - amin));
+                    // if the pen depth is negative, were done
+                    if (penDepth < 0){
+                        finNormal = null;
+                        break;
+                    }
+                    if (penDepth > 0 && penDepth < minPen && a.position.getCopy().getDifference(b.position).dotProduct(normal) >= 0) {
+                        minPen = penDepth;
+                        finNormal = normal;
+                    }
+                }
+
+                if (finNormal != null) {
+                    collide(finNormal, minPen, a, b);
                 }
             }
 
