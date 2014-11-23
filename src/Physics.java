@@ -120,10 +120,13 @@ public class Physics{
                 ArrayList<Pair> normals = b.getNormals();
                 Pair[] points = b.pts;
 
-
+                for (int q = 0; q < b.pts.length; q ++){
+                    normals.add(a.position.getCopy().getDifference(b.pts[q]).convertUnit());
+                }
                 // Find the axis of least penetration
                 double minPen = Double.MAX_VALUE;
                 Pair finNormal = null;
+
                 for (int q = 0; q < normals.size(); q++) {
                     Pair normal = normals.get(q);
                     //System.out.println(normal);
