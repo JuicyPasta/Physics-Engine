@@ -67,7 +67,7 @@ public class Polygon extends Piston {
 
     @Override
     public double mass() {
-        return 0;//replace w area formula
+        return 1000;//replace w area formula
     }
 
     public ArrayList<Pair> getNormals() {

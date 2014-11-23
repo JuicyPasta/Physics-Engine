@@ -127,7 +127,7 @@ public class Physics{
                 for (int q = 0; q < normals.size(); q++) {
                     Pair normal = normals.get(q);
                     // checks to see if the circle is moving towards normal
-                    if (a.velocity.dotProduct(normal) < 0) {
+                    if (a.velocity.dotProduct(normal) <= 0) {
                         double circPt = a.position.getCopy().projOnTo(normal).r();
                         double min = Double.MAX_VALUE;
                         double max = Double.MIN_VALUE;
@@ -141,21 +141,25 @@ public class Physics{
                             if (projection < min) min = projection;
 
                         }
-
                         double penDepth = (Math.min(max - cmin, cmax - min));
+                        // if the pen depth is negative, were done
+                        if (penDepth < 0){
+                            finNormal = null;
+                            break;
+                        }
                         if (penDepth > 0 && penDepth < minPen) {
                             minPen = penDepth;
                             finNormal = normal;
                         }
-                        if (penDepth < 0){
-                            break;
-                        }
+
                     }
 
                 }
+
                 if (finNormal != null) {
-                    System.out.println(finNormal.toString());
-                    System.out.println(minPen);
+                    collide(finNormal, minPen, a, b);
+                    //System.out.println(finNormal.toString());
+                    //System.out.println(minPen);
                 }
                 //Collision handling goes here
 
@@ -196,6 +200,8 @@ public class Physics{
 
     double elasticity = .9;
     public void collide (Pair normal, double depth, Piston a, Piston b){
+        //b.velocity = new Pair (5,5);
+
         double ratioB = a.mass()/(a.mass()+b.mass());
         double ratioA = b.mass()/(a.mass()+b.mass());
         a.position = a.position.subtract(normal.getCopy().multiplyScalar(ratioA*depth));
