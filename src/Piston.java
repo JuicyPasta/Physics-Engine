@@ -17,7 +17,7 @@ public abstract class Piston {
     Shape shape;
     boolean ghost;
     boolean showLine;
-
+    double r;
     //Physics phy;
     int id;
     public Piston (Pair position, Pair velocity, double rot, double vrot, int density){

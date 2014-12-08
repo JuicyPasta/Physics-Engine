@@ -4,7 +4,7 @@ import java.awt.*;
  * Created by Jackson on 11/13/14.
  */
 public class Circle extends Piston {
-    double r;
+
 
     Circle(Pair position, Pair velocity, double rot, double vrot, int density, double r, boolean ghost, boolean showLine){
         super(position, velocity, rot, vrot, density, ghost, showLine);
@@ -22,7 +22,7 @@ public class Circle extends Piston {
         g.setColor(Color.BLACK);
         g.drawOval((int)(position.x-r),(int)(position.y-r),2*(int)r,2*(int)r);
         g.setColor(Color.WHITE);
-        g.fillOval((int)(position.x-r+1),(int)(position.y-r+1),2*(int)r-1,2*(int)r-1);
+        //g.fillOval((int)(position.x-r-1),(int)(position.y-r-1),2*(int)r-1,2*(int)r-1);
         if(showLine){
             g.setColor(Color.BLACK);
 

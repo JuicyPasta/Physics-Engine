@@ -9,7 +9,7 @@ public class Polygon extends Piston {
 
     int sides;
     double sideLength;
-    double radius;
+
     Pair[] pts;
     ArrayList<Pair> normals;
 
@@ -17,7 +17,7 @@ public class Polygon extends Piston {
         super(position, velocity, rot, vrot, 1, ghost, showLine);
         this.sides = sides;
         this.sideLength = sideLength;
-        radius = sideLength/(2*Math.sin(Math.PI/sides));
+        r = sideLength/(2*Math.sin(Math.PI/sides));
 
         pts = new Pair[sides];
         coordsUpdate();
@@ -40,7 +40,7 @@ public class Polygon extends Piston {
         double angle = rot;
 
         for (int i = 0; i < sides; i++){
-            Pair temp = new Pair (position.x + radius*Math.cos(angle), position.y + radius*Math.sin(angle));
+            Pair temp = new Pair (position.x + r*Math.cos(angle), position.y + r*Math.sin(angle));
             pts[i] = temp;
             angle += 2*Math.PI/sides;
         }
@@ -51,7 +51,6 @@ public class Polygon extends Piston {
     //relevent formula:  Side = 2 × Radius × sin(π/n)
     //where radius is distance from center to vertex and n is num of sides
     //exterior angle = 2PI/numOfSides
-
 
 
     public void draw(Graphics g){
@@ -67,7 +66,7 @@ public class Polygon extends Piston {
 
     @Override
     public double mass() {
-        return 1000;//replace w area formula
+        return 6000;//replace w area formula
     }
 
     public ArrayList<Pair> getNormals() {

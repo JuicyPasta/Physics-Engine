@@ -26,10 +26,9 @@ public class Physics{
 
     public void updateGrav (){
         for (Couple coup : couples) {
-            Circle a = (Circle) coup.a;
-            Circle b = (Circle) coup.b;
-            if ((!a.ghost && !b.ghost) && !(Math.sqrt(Math.pow(a.position.x - b.position.x, 2)
-                    + Math.pow(a.position.y - b.position.y, 2))-2 <= a.r + b.r)) {
+            Piston a = coup.a;
+            Piston b = coup.b;
+            if ((!a.ghost && !b.ghost)) {
 
                 double distance = distance(a, b);
                 double force = GRAV_CONST * a.mass() * b.mass() / (distance * distance);
@@ -217,8 +216,6 @@ public class Physics{
 
     double elasticity = .9;
     public void collide (Pair normal, double depth, Piston a, Piston b){
-        //b.velocity = new Pair (5,5);
-
         double ratioB = a.mass()/(a.mass()+b.mass());
         double ratioA = b.mass()/(a.mass()+b.mass());
         a.position = a.position.subtract(normal.getCopy().multiplyScalar(ratioA*depth));
@@ -228,6 +225,23 @@ public class Physics{
         double cosine = relativeVelocity.dotProduct(normal);
         if(cosine > 0)
             return;
+
+        // Handles spinning
+        //find where a and b collided relative to the normal
+        Pair plane = normal.getCopy().getNorm();
+        Pair relativePosition = a.position.getCopy().getDifference(b.position).projOnTo(plane);
+        double relPlaneA = a.position.getCopy().projOnTo(plane).r();
+        double relPlaneB = b.position.getCopy().projOnTo(plane).r();
+        double dist = relPlaneA - relPlaneB;
+        double aratio = dist/a.r; // ratio of how much goes to spin and how much goes to position
+        double bratio = dist/b.r; // if the ratio is 1, 100% goes to spin, if 0, all goes to velocity
+        a.vrot = a.vrot - aratio/50;
+        b.vrot = b.vrot + bratio/50;
+//        a.vrot = a.vrot + aratio * cosine / (a.mass()/(a.mass()+b.mass())) /100;
+//        b.vrot = b.vrot - bratio * cosine / (b.mass()/(a.mass()+b.mass())) /100;
+
+
+        // Handles movement
         cosine *= -elasticity;
         double j = (-(1+elasticity) * cosine) / (1/a.mass() + 1/b.mass());
         Pair impulse = normal.getCopy().multiplyScalar(j);
